@@ -109,9 +109,9 @@ int main() {
 int scan() {
     //clean del buffer
     fflush(stdin);
-    //seteo de la longitud del char
+
+
     char option[4];
-    //scaneo 
     fgets(option, 4, stdin);
     fflush(stdin);
     printf("\n");
