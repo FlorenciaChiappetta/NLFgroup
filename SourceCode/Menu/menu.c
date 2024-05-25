@@ -27,7 +27,7 @@ void menu_print_opciones_menu_principal() {
     printf("3: Salir\n");
 }
 
-void menu_print_abm_optiones() {
+void menu_print_abm_opciones() {
     printf("Elija una de las siguientes opciones:\n\n");
     printf("1 Agregar materia\n");
     printf("2 Agregar estudiante\n");
@@ -40,7 +40,7 @@ void menu_print_abm_optiones() {
     printf("______________________________________________\n");
 }
 
-void menu_print_query_optiones() {
+void menu_print_query_opciones() {
     printf("------- Consultas--------- \n");
     printf("Elija una de las siguientes opciones:\n\n");
     printf("1 Buscar materias\n");
