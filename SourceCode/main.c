@@ -4,7 +4,6 @@
 #include "menu/menu.h"
 
 
-
 /* Lo dejo como un README
 
 Hay que:
@@ -46,7 +45,7 @@ ahi encerramos materias estudiantes etc.
 
 */
 
-int get_menu_opcion();
+int scan();
 
 void crear_materia();
 
@@ -61,6 +60,8 @@ void consultar_materias();
 void consultar_estudiantes();
 
 void consultar_promedio_estudiante();
+
+void listar_estudiantes_y_materias();
 
 void materia_aprobada();
 
@@ -84,7 +85,7 @@ int main() {
     int running = 1;
 
     while (running) {
-        switch (scanf()) {
+        switch (scan()) {
             case 1:
                 realizar_consultas();
                 break;
@@ -105,7 +106,7 @@ int main() {
 }
 
 
-int scanf() {
+int scan() {
     //clean del buffer
     fflush(stdin);
     //seteo de la longitud del char
@@ -123,7 +124,7 @@ void realizar_consultas() {
     int running = 1;
     while (running) {
         menu_print_query_opciones();
-        switch (scanf()) {
+        switch (scan()) {
             case 0:
                 running = 0;
                 break;
@@ -137,7 +138,7 @@ void realizar_consultas() {
                 consultar_promedio_estudiante();
                 break;
             case 4:
-                listar_registro();
+                listar_estudiantes_y_materias();
                 break;
             case 5:
                 materia_aprobada();
@@ -153,7 +154,7 @@ void abm_registros() {
     int running = 1;
     while (running) {
         menu_print_abm_opciones();
-        switch (scanf()) {
+        switch (scan()) {
             case 1:
                 crear_materia();
                 break;
@@ -200,7 +201,7 @@ void rendir_estudiante() {
     
 }
 
-void listar_registro() {
+void listar_estudiantes_y_materias() {
 
 }
 
