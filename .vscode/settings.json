@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "lista": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

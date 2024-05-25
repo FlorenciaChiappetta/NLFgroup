@@ -1,18 +1,18 @@
-#include <stdio.h>
 #include "menu.h"
+#include <stdio.h>
 
 //habria que agregar los "extras", esto es lo minimo que se pide
 
 void menu_principal() {
     printf("______________________________________________\n");
     printf("Bienvenida/o al Sistema de Gestion de Estudiantes\n");
-    menu_print_main_options();
+    menu_print_opciones_menu_principal();
     printf("______________________________________________\n");
 }
 
 void menu_opciones() {
     printf("---------------- Menu principal ----------------\n");
-    menu_print_main_options();
+    menu_print_opciones_menu_principal();
 }
 
 void menu_finalizar(){

@@ -1,3 +1,7 @@
+
+#ifndef menu_H
+#define menu_H
+
 void menu_principal();
 
 void menu_opciones();
@@ -10,3 +14,4 @@ void menu_print_abm_opciones();
 
 void menu_print_query_opciones();
 
+#endif
