@@ -77,6 +77,7 @@ void *list_get_value(list *linkedList, int index) {
     node *pNode = NULL;
     node *actual = linkedList->head;
     while (actual != NULL && actual->data != NULL) {
+            //Compara los bytes de los buffers.
         if (memcmp(actual->data, data, data_size) == 0) {
             pNode = actual;
             break;

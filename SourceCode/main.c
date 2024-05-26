@@ -43,6 +43,9 @@ ahi encerramos materias estudiantes etc.
 
 4- qué guardamos en cada nodo???
 
+5- Persistencia en CSV me va.. 
+podemos hacer un csv para cargar el masivo las materias y alumnos.
+
 */
 
 int scan();
@@ -183,50 +186,37 @@ void abm_registros() {
 }
 
 void crear_materia() {
-   
-    }
-
-
-
-void crear_estudiante() {
-    
 }
 
-void inscribir_estudiante() {
-    
+void crear_estudiante() {
+}
+
+void inscribir_estudiante() { 
 }
 
 
 void rendir_estudiante() {
-    
 }
 
 void listar_estudiantes_y_materias() {
-
 }
 
 void consultar_materias() {
-
 }
 
 
 void consultar_estudiantes() {
-
 }
 
 void consultar_promedio_estudiante() {
-
 }
 
 
-void materia_aprobada() {
-    
+void materia_aprobada() {   
 }
 
 void eliminar_materia() {
-
 }
 
 void eliminar_estudiante() {
-
 }
