@@ -32,3 +32,10 @@ mejoras en la interfaz de usuario
 tests unitarios
 Persistencia en CSV
 (cualquier otra feature que quieran agregar)
+
+
+4 tareas: 
+-implementación de la linked list, terminar, pulir, etc -Flor
+-Implementación de lista alumno  -Lean
+-Implementación de lista materia -AL FINAL
+-Menú, toda la lógica que consume a las lista como servicio -Nacho
