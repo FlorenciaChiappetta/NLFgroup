@@ -1,4 +1,5 @@
 #include "materias.h"
+#include "cursada.h"
 
 //creo el tipo de dato
 typedef struct estudiante {
