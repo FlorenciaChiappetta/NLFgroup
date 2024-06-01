@@ -1,27 +1,35 @@
 #include "materias.h"
 
-//creo el tipo de dato
-typedef struct estudiante {
-    unsigned long legajo;
-    char *nombre;
-    char *apellido;
-    unsigned char edad;
-    cursada *lista_materias;
-} estudiante;
+//creamos  el tipo de dato
 
-//inicializo un estudiante
-estudiante *new_estudiante(unsigned long legajo, const char *nombre, const char *apellido, unsigned char edad);
 
-//metodos varios 
+typedef struct structEstudiante {
+    int legajo;
+    char nombre [100];
+    char apellido [100];
+    int edad[2];
+    carrera carreraAnotada;
+    nodoListaMateria* materias;
+} Estudiante;
 
-void anotarse_materia(estudiante *puntEstudiante, materia *puntMateria);
 
-int rendir_materia();
+typedef struct nodoListaEstudiante {
+    Estudiante* estudiante;
+    struct nodoListaEstudiante* proximo;
+} nodoListaEstudiante;
 
-void get_estudiante();
+//metodos
 
-void eliminar_estudiante();
-
-double calcular_promedio_estudiante();
-
-int aprobo_materia();
+nodoListaEstudiante *crearListaEstudiantes();
+Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, int edad[2], carrera carreraAAnotarse);
+nodoListaEstudiante *crearNodoEstudiante (Estudiante* estudiante);
+NodoListaEstudiante* validarLegajo(nodoListaEstudiante **lista, int legajo); //HECHO
+void darAltaEstudiante(nodoListaEstudiante **lista, Estudiante* nuevoEstudiante);
+void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]);
+int obtenerLongitudLista(nodoListaEstudiante **lista);
+void anotarMateria(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path);
+void rendirMateria(nodoListaMateria* materia_a_rendir);
+void consultarPromedio(nodoListaMateria *lista);
+void getEstudiante(estudiante *alumno);
+void getListaEstudiantes(nodoListaEstudiante *lista); //HACER
+void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]);

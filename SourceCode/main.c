@@ -95,7 +95,7 @@ int main() {
             case 2:
                 abm_registros();
                 break;
-            case 0:
+            case 3:
                 running = 0;
                 break;
             default:
@@ -105,15 +105,16 @@ int main() {
         menu_opciones();
     }
     menu_finalizar();
+
+    
     return 0;
 }
 
 
 int scan() {
+
     //clean del buffer
     fflush(stdin);
-
-
     char option[4];
     fgets(option, 4, stdin);
     fflush(stdin);
@@ -128,7 +129,7 @@ void realizar_consultas() {
     while (running) {
         menu_print_query_opciones();
         switch (scan()) {
-            case 0:
+            case 6:
                 running = 0;
                 break;
             case 1:
@@ -176,7 +177,7 @@ void abm_registros() {
             case 6:
                 eliminar_estudiante();
                 break;
-            case 0:
+            case 7:
                 running = 0;
                 break;
             default:
