@@ -1,6 +1,14 @@
 #include <stdlib.h>
 //creo el tipo de dato MATERIA
 
+typedef enum {false, true} bool;
+typedef enum {computacion,sonido} carrera;
+
+const char *nombresCarreras[] = {
+  "Computacion",
+  "Sonido",
+  "Ambiental",
+};
 
 typedef struct structMateria {
     char nombre[100];
@@ -21,4 +29,6 @@ Materia* crearMateria(char nombre[100], int anio);
 nodoListaMateria* crearNodoMateria(Materia* materiaNueva);
 nodoListaMateria* darAltaMateria(nodoListaMateria** lista, Materia* nombreMateria);
 int obtenerCantMaterias(nodoListaMateria **lista);
-nodoListaMateria* buscarIDMateriaAnotada(nodoListaMateria *lista, int id);
+nodoListaMateria* buscarMateriaPorNombre(nodoListaMateria *lista, char nombre[100]); //HACER
+void getListaMaterias(nodoListaMateria *lista); //HECHO
+nodoListaMateria* buscarMateriaPorID(nodoListaMateria *lista, int id);

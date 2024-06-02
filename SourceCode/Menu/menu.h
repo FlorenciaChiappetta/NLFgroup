@@ -1,13 +1,10 @@
 
-void menu_principal();
+void Bienvenida();
 
-void menu_opciones();
+void menuPrincipal();
 
-void menu_finalizar();
+void menuFinalizar();
 
-void menu_print_opciones_menu_principal();
+void menuOpcionesABM();
 
-void menu_print_abm_opciones();
-
-void menu_print_query_opciones();
-
+void menuOpcionesConsultas();

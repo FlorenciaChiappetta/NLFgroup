@@ -8,7 +8,6 @@ nodoListaEstudiantes *crearListaEstudiantes() {
 }
 
 //    Crea un nodo de estudiante a partir de la referencia a un estudiante
-
 nodoListaEstudiantes *crearNodoEstudiante (Estudiante* estudiante){
     nodoListaEstudiantes *nodo = malloc(sizeof(nodoListaEstudiantes));
     nodo->estudiante = estudiante;
@@ -16,10 +15,7 @@ nodoListaEstudiantes *crearNodoEstudiante (Estudiante* estudiante){
     return nodo;
 }
 
-
-
 // Crear estudiante
-
 Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, int edad[2], carrera carreraAAnotarse){
     Estudiante *estudianteNuevo = malloc(sizeof(Estudiante));
     strcpy(estudianteNuevo->nombre, nombre);

@@ -3,7 +3,16 @@
 #define EdadMinima 17
 #define EdadMaxima 100
 #define notaMinima 4
+#define COLOR_RED     "\033[31m"
+#define COLOR_RESET   "\033[0m"
 
+//Inicializa la lista de referencias de estudiantes
+nodoListaEstudiante *crearListaEstudiantes() {
+    nodoListaEstudiante *nodo = malloc(sizeof(nodoListaEstudiante));
+    nodo->estudiante = NULL;
+    nodo->proximo = NULL;
+    return nodo;
+}
 
 //creo estudiante
 Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, int edad[2], carrera carreraAAnotarse){
@@ -35,7 +44,6 @@ void getEstudiante(estudiante *alumno) {
     if (alumno == NULL) {
         return;
     }
-
     printf("Nombre: %s", alumno->nombre);
     printf("Apellido: %s", alumno->apellido);
     printf("Edad: %d\n", alumno->edad);
@@ -47,7 +55,6 @@ void getEstudiante(estudiante *alumno) {
  devuelve 0 si el param1 es menor al param2.
  */
 int compararEdad(int *edad1, int *edad2) {
-
    if (*edad1 > *edad 2) {
     return 1
    }
@@ -164,14 +171,12 @@ int contarMaterias(char * nombreArc){
     return n;
 }
 
-/*  
-    Funcion que valida si fueron aprobadas las materias de años anteriores para poder anotarte en una materia
-    Devuelve false si:
-    - Se esta intentando anotar como primer materia a una de año mayor a 1
-    - No fueron aprobadas todas las materias de años anteriores a la que el estudiante desea anotarse
-    - Errores inesperados: el archivo no pudo abrirse, el archivo no tiene materias
-    Si no devuelve true
-*/
+//valida si fueron aprobadas las materias de años anteriores para poder anotarte en una materia
+//Devuelve false si:
+//- Se esta intentando anotar como primer materia a una de año mayor a 1
+//- No fueron aprobadas todas las materias de años anteriores a la que el estudiante desea anotarse
+//    Si no devuelve true
+
 bool aproboMateriasDeAniosAnteriores(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path){
     
     // Si el estudiante se esta anotando a su primer materia
@@ -231,9 +236,9 @@ bool aproboMateriasDeAniosAnteriores(Materia *materia_a_anotar, nodoListaEstudia
     return true;
 }
 
-/*  Recibe la referencia a una materia y la referencia a un nodo de estudiante.
-    Recorro la lista de materias del estudiante para chequear que el estudiante no se haya anotado a dicha materia
-    Si no lo hizo, se chequea que se hayan aprobado todas las materias de años anteriores */
+// Recibe la referencia a una materia y la referencia a un nodo de estudiante.
+//Recorro la lista de materias del estudiante para chequear que el estudiante no se haya anotado a dicha materia
+// Si no lo hizo, se chequea que se hayan aprobado todas las materias de años anteriores 
 void anotarMateria(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path) {    
     nodoListaMateria *cursor = nodoEstudiante->estudiante->materias;
     while(cursor != NULL){
@@ -252,11 +257,10 @@ void anotarMateria(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiant
 }
 
 
-/*
-    Recibe la referencia a una materia a rendir.
-    Se ingresan las 3 notas que el estudiante obtuvo durante su cursada.
-    Las guardamos junto al promedio de las 3 notas.
-*/
+//Recibe la referencia a una materia a rendir.
+// Se ingresan las 3 notas que el estudiante obtuvo durante su cursada.
+//   Las guardamos junto al promedio de las 3 notas.
+
 void rendirMateria(nodoListaMateria* materia_a_rendir){
     if(materia_a_rendir->materia->promedio==0 || materia_a_rendir->materia->promedio < 4){
         printf("Nota de primer parcial: ");
@@ -271,10 +275,8 @@ void rendirMateria(nodoListaMateria* materia_a_rendir){
     }
 }
 
-/*
-    Recibe una lista de referencias de estudiantes y un legajo.
-    Busca y retorna la referencia al estudiante cuyo legajo coincida con el introducido.
-*/
+//Recibe una lista de referencias de estudiantes y un legajo.
+//Busca y retorna la referencia al estudiante cuyo legajo coincida con el introducido.
 nodoListaEstudiante* validarLegajo(nodoListaEstudiante **lista, int legajo){
     bool legajoEncontrado = false;
     nodoListaEstudiante *cursor = *lista;
@@ -289,10 +291,8 @@ nodoListaEstudiante* validarLegajo(nodoListaEstudiante **lista, int legajo){
 }
 
 
-/*
-    Recibe una lista de referencias de materias de un estudiante.
-    Calcula e imprime el promedio general considerando las materias aprobadas.
-*/
+// Recibe una lista de referencias de materias de un estudiante. Calcula e imprime el promedio general considerando las materias aprobadas.
+
 void consultarPromedio(nodoListaMateria *lista) {
     
     int sumaNotas = 0;
@@ -315,17 +315,13 @@ void consultarPromedio(nodoListaMateria *lista) {
     
 }
 
-/*
-    Buscamos un estudiante por nombre.
-    Como la lista alfabeticamente, primero se busca los apellidos que comienzan por A hasta los que comienzan por Z.
-    Si se encuentra, imprimimos los datos del estudiante.
-*/
+// Buscamos un estudiante por nombre.
 void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]){
     nodoListaEstudiante* cursor = *lista;
     bool estudianteEncontrado = false;
     while(cursor != NULL){
         if(strcmp(cursor->estudiante->nombre, nombre) == 0){
-            printf("[Nombre: %s, Apellido: %s, Legajo: %d, Fecha nacimiento: %d/%d/%d)] -> \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->fechaDeNacimiento[0],cursor->estudiante->fechaDeNacimiento[1],cursor->estudiante->fechaDeNacimiento[2]);
+            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] -> \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
             estudianteEncontrado = true;
         }
         cursor = cursor->proximo;

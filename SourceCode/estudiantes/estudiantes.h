@@ -26,10 +26,10 @@ nodoListaEstudiante *crearNodoEstudiante (Estudiante* estudiante);
 NodoListaEstudiante* validarLegajo(nodoListaEstudiante **lista, int legajo); //HECHO
 void darAltaEstudiante(nodoListaEstudiante **lista, Estudiante* nuevoEstudiante);
 void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]);
+void buscarEstudiantePorLegajo(nodoListaEstudiante **lista, int legajo);//HACER
 int obtenerLongitudLista(nodoListaEstudiante **lista);
 void anotarMateria(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path);
 void rendirMateria(nodoListaMateria* materia_a_rendir);
 void consultarPromedio(nodoListaMateria *lista);
 void getEstudiante(estudiante *alumno);
 void getListaEstudiantes(nodoListaEstudiante *lista); //HACER
-void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]);
