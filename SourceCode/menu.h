@@ -1,7 +1,3 @@
-#define COLOR_RED     "\033[31m"
-#define COLOR_RESET   "\033[0m"
-
-
 void Bienvenida();
 
 void menuPrincipal();

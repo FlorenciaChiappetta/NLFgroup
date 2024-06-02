@@ -1,45 +1,16 @@
-#include "materias.h"
 #include <string.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <ctype.h>
+#include <math.h>
+#include "estructuras.h"
+
 #define EdadMinima 17
 #define EdadMaxima 100
 #define notaMinima 4
 #define COLOR_RED     "\033[31m"
 #define COLOR_RESET   "\033[0m"
 
-typedef enum {false, true} bool;
-typedef enum {computacion,sonido} carrera;
-
-const char *nombresCarreras[] = {
-  "Computacion",
-  "Sonido",
-  "Ambiental",
-};
-
-//creamos  el tipo de dato
-typedef struct structEstudiante {
-    int legajo;
-    char nombre [100];
-    char apellido [100];
-    int edad[2];
-    carrera carreraAnotada;
-    nodoListaMateria* materias;
-} Estudiante;
-
-
-typedef struct nodoListaEstudiante {
-    Estudiante* estudiante;
-    struct nodoListaEstudiante* proximo;
-} nodoListaEstudiante;
-
-
-
-//    Crea un nodo de estudiante a partir de la referencia a un estudiante
-nodoListaEstudiantes *crearNodoEstudiante (Estudiante* estudiante){
-    nodoListaEstudiantes *nodo = malloc(sizeof(nodoListaEstudiantes));
-    nodo->estudiante = estudiante;
-    nodo->next = NULL;
-    return nodo;
-}
 
 //Inicializa la lista de referencias de estudiantes
 nodoListaEstudiante *crearListaEstudiantes() {
@@ -55,7 +26,7 @@ Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, in
     strcpy(estudianteNuevo->nombre, nombre);
     strcpy(estudianteNuevo->apellido, apellido);
     estudianteNuevo->legajo = legajo;
-    if (edad >= EdadMinima || edad <=  EdadMaxima) {
+    if (*edad >= EdadMinima || *edad <=  EdadMaxima) {
     memcpy(estudianteNuevo->edad, edad, sizeof(int) * 2);
     }
     estudianteNuevo->materias = malloc(sizeof(nodoListaMateria));
@@ -66,8 +37,18 @@ Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, in
     return estudianteNuevo;
 }
 
+
+//    Crea un nodo de estudiante a partir de la referencia a un estudiante
+nodoListaEstudiante *crearNodoEstudiante (Estudiante* estudiante){
+    nodoListaEstudiante *nodo = malloc(sizeof(nodoListaEstudiante));
+    nodo->estudiante = estudiante;
+    nodo->proximo = NULL;
+    return nodo;
+}
+
+
 //imprime los datos del alumno
-void getEstudiante(Estudiante* nuevoEstudiante) {
+void getEstudiante(Estudiante* estudiante) {
     if (estudiante == NULL) {
         return;
     }
@@ -75,6 +56,15 @@ void getEstudiante(Estudiante* nuevoEstudiante) {
     printf("Apellido: %s", estudiante->apellido);
     printf("Edad: %d\n", estudiante->edad);
     printf("Legajo: %d\n\n", estudiante->legajo);
+}   
+
+//devuelve 1 si la edad del param1 es mayor o igual a la del segundo param, sino, devuelve 0
+int compararEdad(int *edad1, int *edad2) {
+   if (edad1 >= edad2) {
+    return 1;
+    }
+
+    return 0;
 }
 
 //Agrega a la lista de referencias de materias un nuevo estudiante.Se ordena por edad.
@@ -117,15 +107,6 @@ void darAltaEstudiante(nodoListaEstudiante **lista, Estudiante* nuevoEstudiante)
     }
 }
 
-//devuelve 1 si la edad del param1 es mayor o igual a la del segundo param, sino, devuelve 0
-
-int compararEdad(int *edad1, int *edad2) {
-   if (edad1 >= edad2) {
-    return 1
-   }
-
-    return 0;
-}
 
 //Devuelve la cantidad de estudiantes
  int obtenerLongitudLista(nodoListaEstudiante **lista){
@@ -140,148 +121,7 @@ int compararEdad(int *edad1, int *edad2) {
     }
     return largo + 1;
 }
-
-//busco el nombre de materia de linea de archivo
-void obtenerMateria(char *linea, char* materia){
-    int j=0;
-    int i=0;
-
-    //obtenemos materia
-    while(linea[i] != ','){
-        materia[j++] = linea[i++];
-    }
-    materia[j] = '\0'; // Agregamos el terminador de cadena nulo
-}
-
-// devuelve el año que corresponde a la linea del archivo
-int obtenerAnio(char *linea){
-    char anio[100];
-    int j=0;
-    int i=0;
-
-    //llego hasta la coma
-    while(linea[i] != ','){
-        i++;
-    }
-    i++; //salto la coma
-
-    j=0;
-    //Obtenemos grado
-    while(linea[i]!='\0'){
-        anio[j++] = linea[i++];
-    }
-
-    anio[j] = '\0'; // Agregamos el terminador de cadena nulo
-    int anioNro = atoi(anio);
-
-    return anioNro;
-}
-
-
-
-//Devuelve cantidad de materias del archivo pasado por parámetro
-int contarMaterias(char * nombreArc){
-    FILE *pa = fopen(nombreArc,"r");
-    if(pa==NULL){
-        printf(COLOR_RED"ERROR: No se pudo abrir el archivo: %s\n"COLOR_RESET, nombreArc);
-        return -1;
-    }
-    int n=0; //cantidad de materias
-    char c=fgetc(pa);
-    while(!feof(pa)){
-        if(c=='\n') n++;
-        c = fgetc(pa);
-    }
-    fclose(pa);
-    return n;
-}
-
-//valida si fueron aprobadas las materias de años anteriores para poder anotarte en una materia
-//Devuelve false si:
-//- Se esta intentando anotar como primer materia a una de año mayor a 1
-//- No fueron aprobadas todas las materias de años anteriores a la que el estudiante desea anotarse
-//    Si no devuelve true
-
-bool aproboMateriasDeAniosAnteriores(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path){
     
-    // Si el estudiante se esta anotando a su primer materia
-    if(nodoEstudiante->estudiante->materias->materia == NULL){
-        // Si el año de la materia es mayor a 1: no esta autorizado
-        if(materia_a_anotar->anio > 1){
-            return false;
-        } else{
-            return true;
-        }
-    }
-    
-    FILE *pEnt = fopen(path,"r"); 
-    int n = contarMaterias(path);
-    
-    //Si el archivo no tiene materias
-    if(n == 0){
-        printf(COLOR_RED "ERROR: No existe ninguna materia en la base de datos" COLOR_RESET);
-        return false;
-    }
-
-    //Si el archivo no se pudo abrir (contarMaterias imprimio el error)
-    if(n == -1){
-        return false;
-    }
-
-    //Llegamos a la segunda linea
-    char linea[1000];
-    fgets(linea,sizeof(linea),pEnt); //Titulos de los campos 
-
-    int anio = 0;
-    char materia[100];
-
-    //Se recorre el CSV hasta llegar a la materia que sea del mismo año que a la que se quiere anotar
-    while(materia_a_anotar->anio > anio){
-        fgets(linea,1000,pEnt);
-        anio = obtenerAnio(linea); //Obtenemos año de la linea de archivo
-        obtenerMateria(linea, materia); //Obtenemos nombre de materia de linea de archivo
-        
-        nodoListaMateria* cursor = nodoEstudiante->estudiante->materias;
-        //Recorremos la lista de materias
-        //Comprobamos que el alumno aprobo la materia sobre la que estamos parados (una materia de año anterior a la que se quiere anotar)
-        while (cursor!=NULL){ 
-            if(strcmp(cursor->materia->nombre, materia) == 0){
-                // Si la materia no fue aprobada
-                if(cursor->materia->promedio < 4 && materia_a_anotar->anio > anio){
-                    printf(COLOR_RED "ERROR: No estas autorizado a anotarte a la materia: %s\n",materia_a_anotar);
-                    printf("RAZON: No aprobaste todas las materias de años anteriores\n" COLOR_RESET);
-                    return false;
-                }
-            }
-            cursor = cursor -> proximo;
-        }
-    }
-
-    //Si todas las materias de años anteriores a la que se quiere anotar fueron aprobadas
-    return true;
-}
-
-// Recibe la referencia a una materia y la referencia a un nodo de estudiante.
-//Recorro la lista de materias del estudiante para chequear que el estudiante no se haya anotado a dicha materia
-// Si no lo hizo, se chequea que se hayan aprobado todas las materias de años anteriores 
-void anotarMateria(Materia *materia_a_anotar, nodoListaEstudiante *nodoEstudiante, char* path) {    
-    nodoListaMateria *cursor = nodoEstudiante->estudiante->materias;
-    while(cursor != NULL){
-        //Si el estudiante ya esta anotado en la materia
-        if(cursor->materia->nombre != NULL && strcmp(cursor->materia->nombre, materia_a_anotar->nombre) == 0){
-            printf(COLOR_RED "ERROR: Materia: '%s' ya cursada o en curso\n" COLOR_RESET, materia_a_anotar->nombre);
-            return;
-        }
-        cursor = cursor->proximo;
-    }
-    
-    if(aproboMateriasDeAniosAnteriores(materia_a_anotar, nodoEstudiante, path)){
-        darAltaMateria(&nodoEstudiante->estudiante->materias,materia_a_anotar);
-        printf("Te has anotado con exito en la materia: %s\n", materia_a_anotar->nombre);
-    }
-}
-
-
 //Recibe la referencia a una materia a rendir.
 // Se ingresan las 3 notas que el estudiante obtuvo durante su cursada.
 //   Las guardamos junto al promedio de las 3 notas.
@@ -319,7 +159,6 @@ nodoListaEstudiante* validarLegajo(nodoListaEstudiante **lista, int legajo){
 // Recibe una lista de referencias de materias de un estudiante. Calcula e imprime el promedio general considerando las materias aprobadas.
 
 void consultarPromedio(nodoListaMateria *lista) {
-    
     int sumaNotas = 0;
     int contadorMateriasRendidas = 0;
     nodoListaMateria *cursor = lista;
@@ -357,4 +196,113 @@ void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]){
     }
 
     return; 
+}
+
+void buscarEstudiantePorLegajo(nodoListaEstudiante **lista, int legajo){
+nodoListaEstudiante* cursor = *lista;
+    bool estudianteEncontrado = false;
+    while(cursor != NULL){
+        if(cursor->estudiante->legajo == legajo){
+            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] -> \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
+            estudianteEncontrado = true;
+        }
+        cursor = cursor->proximo;
+    }
+
+    if(!estudianteEncontrado){
+        printf("No existe un estudiante con ese nombre!");
+    }
+
+    return; 
+}
+
+//creo lista de materias
+nodoListaMateria* crearListaMaterias() {
+    nodoListaMateria *nodo = (nodoListaMateria *) malloc(sizeof(nodoListaMateria));
+    nodo->materia = NULL;
+    nodo->proximo = NULL;
+    return nodo;
+}
+
+
+// creo una materia
+Materia* crearMateria(char nombre[100], int anio){
+    Materia* materiaNueva = (Materia*)malloc(sizeof(Materia));
+    strcpy(materiaNueva->nombre, nombre);
+    materiaNueva->anio = anio;
+    materiaNueva->notas[0] = 0;
+    materiaNueva->notas[1] = 0;
+    materiaNueva->notas[2] = 0;
+    materiaNueva->promedio = 0.0;
+    return materiaNueva;
+}
+
+//  Crea un nuevo nodo materia 
+nodoListaMateria* crearNodoMateria(Materia* materiaNueva){
+    nodoListaMateria *nodo = (nodoListaMateria *) malloc(sizeof(nodoListaMateria));
+    nodo->materia = materiaNueva;
+    nodo->proximo = NULL;
+    return nodo;
+}
+
+//Agrega a la lista de materias una materia nueva
+nodoListaMateria* darAltaMateria(nodoListaMateria** lista, Materia* nombreMateria){
+    nodoListaMateria *nuevoNodo = crearNodoMateria(nombreMateria);
+    // si la lista esta vacia, le añado un nodo.
+    if ((*lista)->materia == NULL) { 
+        *lista = nuevoNodo;
+    }
+    else {
+        nodoListaMateria *cursor = *lista;
+        //Si existe otro nodo, muevo el cursor a ese nodo
+        while (cursor->proximo != NULL) { 
+            cursor = cursor->proximo;
+        }
+        // si no existe otro nodo.. agregamos uno
+        cursor->proximo = nuevoNodo; 
+    }
+}
+
+
+//    Devuelve el largo de una lista de referencias de materias
+int obtenerCantMaterias(nodoListaMateria **lista) {
+    int largo = 0;
+    nodoListaMateria *cursor = *lista;
+    while (cursor != NULL) {
+        cursor = cursor->proximo;
+        largo++;
+    }
+    return largo;
+}
+
+
+  // Busca materia en lista por ID
+nodoListaMateria* buscarMateriaPorID(nodoListaMateria *lista, int id){
+    int contador = 1;
+    nodoListaMateria* cursor = lista;
+    while(cursor != NULL){
+        if(contador == id){
+            return cursor; 
+        }
+        cursor = cursor->proximo; 
+        contador++;
+    }
+    return NULL;
+}
+
+
+//  Recibe la lista de referencias de materias y las lista
+void getListaMaterias(nodoListaMateria *lista) {
+    int contador;
+    contador  = 0;
+    nodoListaMateria *cursor = lista;
+    if(lista->materia == NULL){
+        printf("La lista esta vacia!");
+        return;
+    }
+    
+    while (cursor != NULL) {
+        printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+         cursor = cursor->proximo;
+    }
 }
