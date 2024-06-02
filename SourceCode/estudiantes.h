@@ -1,10 +1,45 @@
-#include "estudiantes.h"
+#include "materias.h"
 #include <string.h>
 #define EdadMinima 17
 #define EdadMaxima 100
 #define notaMinima 4
 #define COLOR_RED     "\033[31m"
 #define COLOR_RESET   "\033[0m"
+
+typedef enum {false, true} bool;
+typedef enum {computacion,sonido} carrera;
+
+const char *nombresCarreras[] = {
+  "Computacion",
+  "Sonido",
+  "Ambiental",
+};
+
+//creamos  el tipo de dato
+typedef struct structEstudiante {
+    int legajo;
+    char nombre [100];
+    char apellido [100];
+    int edad[2];
+    carrera carreraAnotada;
+    nodoListaMateria* materias;
+} Estudiante;
+
+
+typedef struct nodoListaEstudiante {
+    Estudiante* estudiante;
+    struct nodoListaEstudiante* proximo;
+} nodoListaEstudiante;
+
+
+
+//    Crea un nodo de estudiante a partir de la referencia a un estudiante
+nodoListaEstudiantes *crearNodoEstudiante (Estudiante* estudiante){
+    nodoListaEstudiantes *nodo = malloc(sizeof(nodoListaEstudiantes));
+    nodo->estudiante = estudiante;
+    nodo->next = NULL;
+    return nodo;
+}
 
 //Inicializa la lista de referencias de estudiantes
 nodoListaEstudiante *crearListaEstudiantes() {
@@ -31,35 +66,15 @@ Estudiante* crearEstudiante(char nombre[100], char apellido[100], int legajo, in
     return estudianteNuevo;
 }
 
-//creo nodo de estudiante
-nodoListaEstudiante *crearNodoEstudiante (Estudiante* estudiante){
-    nodoListaEstudiante *nodo = malloc(sizeof(nodoListaEstudiante));
-    nodo->estudiante = estudiante;
-    nodo->proximo = NULL;
-    return nodo;
-}
-
 //imprime los datos del alumno
-void getEstudiante(estudiante *alumno) {
-    if (alumno == NULL) {
+void getEstudiante(Estudiante* nuevoEstudiante) {
+    if (estudiante == NULL) {
         return;
     }
-    printf("Nombre: %s", alumno->nombre);
-    printf("Apellido: %s", alumno->apellido);
-    printf("Edad: %d\n", alumno->edad);
-    printf("Legajo: %d\n\n", alumno->legajo);
-}
-
-/* Compara la edad de dos estudiantes.
- devuelve 1 si el param1 es mayor al param2
- devuelve 0 si el param1 es menor al param2.
- */
-int compararEdad(int *edad1, int *edad2) {
-   if (*edad1 > *edad 2) {
-    return 1
-   }
-
-    return 0;
+    printf("Nombre: %s", estudiante->nombre);
+    printf("Apellido: %s", estudiante->apellido);
+    printf("Edad: %d\n", estudiante->edad);
+    printf("Legajo: %d\n\n", estudiante->legajo);
 }
 
 //Agrega a la lista de referencias de materias un nuevo estudiante.Se ordena por edad.
@@ -100,6 +115,16 @@ void darAltaEstudiante(nodoListaEstudiante **lista, Estudiante* nuevoEstudiante)
             cursor->proximo = nuevoNodo;
         }
     }
+}
+
+//devuelve 1 si la edad del param1 es mayor o igual a la del segundo param, sino, devuelve 0
+
+int compararEdad(int *edad1, int *edad2) {
+   if (edad1 >= edad2) {
+    return 1
+   }
+
+    return 0;
 }
 
 //Devuelve la cantidad de estudiantes

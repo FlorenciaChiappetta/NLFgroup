@@ -1,15 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "menu/menu.h"
+#include "menu.h"
 #include "estudiantes.h"
 #include "materias.h"
 #define COLOR_RED     "\033[31m"
 #define COLOR_RESET   "\033[0m"
 
+typedef enum {false, true} bool;
+typedef enum {computacion,sonido} carrera;
+
+const char *nombresCarreras[] = {
+  "Computacion",
+  "Sonido",
+  "Ambiental",
+};
+
 
 nodoListaEstudiante *listaDeEstudiantes = NULL;
 nodoListaEstudiante *estudianteSeleccionado = NULL;
+
 
 int main() {
     setbuf(stdout, 0);
@@ -71,8 +81,8 @@ void realizarConsultas() {
             case 1:
                 int opcion;
                 printf("Elija una opción\n");
-                printf("1. Buscar estudiante por legajo\n");
-                printf("2. Buscar estudiante por nombre\n");
+                printf("1. Buscar estudiante por nombre\n");
+                printf("2. Buscar estudiante por legajo\n");
                 scanf("%d", &opcion);
                 switch (opcion) {
                 case 1:
@@ -85,7 +95,7 @@ void realizarConsultas() {
                     printf("Ingrese el numero de legajo.\n");
                     int legajo;
                     scanf("%d", &legajo);
-                    buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo); //HACER METODO!!
+                   // buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo); 
                     break;
             case 2:
                 //solicitamos legajo
