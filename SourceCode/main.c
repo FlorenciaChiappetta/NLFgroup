@@ -68,9 +68,13 @@ void abmRegistros() {
     while (running) {
         menuOpcionesABM();
         scanf("%d", &opcionElegida);
+        
         switch (opcionElegida) {
             case 1:
-                //llamar a crearMateria(char nombre[100], int anio) blabla
+                printf("Seleccione la carrera:\n"); 
+                char path[116] = ".\\materiasXcarreras\\";
+                elegirCarrera(path);
+                agregarMateriaEnArchivoCSV(path);
                 break;
             case 2:
                 printf("Ingrese la informacion del estudiante:\n");
@@ -80,12 +84,15 @@ void abmRegistros() {
                 char apellido[100];
                 printf("Apellido: ");
                 scanf("%s", apellido);
+                int edad[2];
+                printf("Edad:");
+                scanf("%d", &edad);
                 int legajo;
                 printf("Legajo: ");
                 scanf("%d", &legajo);
                 int opcionCarrera;
                 carrera carreraAAnotarse;
-                printf("\n\033[1m--CARRERAS DISPONIBLES--\033[0m\n");
+                printf("\n\033[1m--OFERTA ACADEMICA--\033[0m\n");
                 printf("1) Ingeniería en computación\n2)Ingeniería en sonido\n");
                 printf("Elegir carrera: ");
                 scanf("%d",&opcionCarrera);
@@ -98,9 +105,7 @@ void abmRegistros() {
                     printf(COLOR_RED"ERROR: Carrera no encontrada"COLOR_RESET);
                     break;
                 }
-                int edad[2];
-                printf("Edad:\n");
-                scanf("%d", &edad[2]);
+                
                 if (listaDeEstudiantes == NULL){  
                     // Compruebo unicamente la ordenada por edad ya que ambas listas van de la mano
                     listaDeEstudiantes = crearListaEstudiantes(); 
@@ -112,8 +117,28 @@ void abmRegistros() {
                 }
                 break;
             case 3:
-            //hacer
-                break;
+                    printf("Ingrese su legajo: ");
+                    int legajoEst;
+                    scanf("%d", &legajoEst);
+                    nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
+                    printf("Seleccione la carrera:\n");
+                    char pathListar[116] = ".\\materiasXcarreras\\";
+                    // Se elige la carrera (el csv)
+                    obtenerRutaDelArchivoxCarrera(pathListar,estudiante);
+                    // Se paginan las materias del csv, si el usuario selecciona una materia
+                    bool ID = ListarMateriasDeArchivo(pathListar,false);
+                    if(ID){ //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
+                        printf("Indique ID: ");
+                        int idAnotar;
+                        scanf("%d",&idAnotar);
+                        // En base al id de la materia introducida, se busca y obtiene esa materia
+                        Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, pathListar);
+                        
+                        if(materiaAAnotarse != NULL){ //Si se encontro la materia..
+                            anotarMateria(materiaAAnotarse, estudiante,pathListar);
+                        }
+                    }
+                    break;
             case 4:
             //hacer
                 break;
@@ -125,7 +150,6 @@ void abmRegistros() {
         }
     }
 }
-
 
 
 int main() {

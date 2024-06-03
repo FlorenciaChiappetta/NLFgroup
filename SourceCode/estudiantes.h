@@ -263,6 +263,126 @@ nodoListaMateria* darAltaMateria(nodoListaMateria** lista, Materia* nombreMateri
     }
 }
 
+int obtenerAnioMateria(char *linea){
+    char anio[100];
+    int j=0;
+    int i=0;
+
+    //llego hasta la coma
+    while(linea[i] != ','){
+        i++;
+    }
+    i++; //salto la coma
+
+    j=0;
+    //Obtenemos grado
+    while(linea[i]!='\0'){
+        anio[j++] = linea[i++];
+    }
+
+    anio[j] = '\0'; // Agregamos el terminador de cadena nulo
+    int anioNro = atoi(anio);
+
+    return anioNro;
+}
+
+void obtenerMateria(char *linea, char* materia){
+    int j=0;
+    int i=0;
+
+    //obtenemos materia
+    while(linea[i] != ','){
+        materia[j++] = linea[i++];
+    }
+    materia[j] = '\0'; 
+}
+
+
+
+//Devuelve cantidad de materias del archivo pasado por parámetro
+int contarMaterias(char * nombreArc){
+    FILE *pa = fopen(nombreArc,"r");
+    if(pa==NULL){
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo: %s\n"COLOR_RESET, nombreArc);
+        return -1;
+    }
+    int n=0; //cantidad de materias
+    char c=fgetc(pa);
+    while(!feof(pa)){
+        if(c=='\n') n++;
+        c = fgetc(pa);
+    }
+    fclose(pa);
+    return n;
+}
+
+
+
+
+// Funcion que valida si fueron aprobadas las materias de años anteriores
+//    Devuelve false si:
+//   - Se esta intentando anotar como primer materia a una de año mayor a 1
+//    - No fueron aprobadas todas las materias de años anteriores a la que el estudiante desea anotarse
+//    - Errores inesperados: el archivo no pudo abrirse, el archivo no tiene materias
+//    Si no devuelve true
+
+bool ValidarMateria(Materia *materiaAnotar, nodoListaEstudiante *nodoEstudiante, char* path){
+    // Si el estudiante se esta anotando a su primer materia
+    if(nodoEstudiante->estudiante->materias->materia == NULL){
+        // Si el año de la materia es mayor a 1: no esta autorizado
+        if(materiaAnotar->anio > 1){
+            return false;
+        } else{
+            return true;
+        }
+    }
+    
+    FILE *INput = fopen(path,"r"); 
+    int n = contarMaterias(path);
+    
+    //Si el archivo no tiene materias
+    if(n == 0){
+        printf(COLOR_RED "ERROR: No existe ninguna materia" COLOR_RESET);
+        return false;
+    }
+
+    //Si el archivo no se pudo abrir (contarMaterias imprimio el error)
+    if(n == -1){
+        return false;
+    }
+
+    //Llegamos a la segunda linea
+    char linea[1000];
+    fgets(linea,sizeof(linea),INput); //Titulos de los campos 
+
+    int anio = 0;
+    char materia[100];
+
+    //Se recorre el CSV hasta llegar a la materia que sea del mismo año que a la que se quiere anotar
+    while(materiaAnotar->anio > anio){
+        fgets(linea,1000,INput);
+        anio = obtenerAnioMateria(linea); 
+        obtenerMateria(linea, materia); //Obtenemos nombre de materia de linea de archivo
+        
+        nodoListaMateria* cursor = nodoEstudiante->estudiante->materias;
+        //Recorremos la lista de materias
+        //Comprobamos que el alumno aprobo la materia sobre la que estamos parados (una materia de año anterior a la que se quiere anotar)
+        while (cursor!=NULL){ 
+            if(strcmp(cursor->materia->nombre, materia) == 0){
+                // Si la materia no fue aprobada
+                if(cursor->materia->promedio < 4 && materiaAnotar->anio > anio){
+                    printf(COLOR_RED "Alumno no autorizado para inscripción. Materia: %s\n no aprobada en ciclo anterior..",materiaAnotar);
+                    return false;
+                }
+            }
+            cursor = cursor -> proximo;
+        }
+    }
+
+    //Si todas las materias de años anteriores a la que se quiere anotar fueron aprobadas
+    return true;
+}
+
 
 //    Devuelve el largo de una lista de referencias de materias
 int obtenerCantMaterias(nodoListaMateria **lista) {
@@ -304,5 +424,258 @@ void getListaMaterias(nodoListaMateria *lista) {
     while (cursor != NULL) {
         printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
          cursor = cursor->proximo;
+    }
+}
+//permite elegir una carrera
+void elegirCarrera(char* path){
+    bool salir = false;
+    while(!salir){
+        int opcion;
+        printf("1. Ingenieria de computacion\n");
+        printf("2. Ingenieria de sonido\n");
+        printf("\nIngrese una opcion: ");
+        scanf("%d", &opcion);
+        
+        switch (opcion)
+        {
+        case 1:
+            strcat(path, "IngenieriaEnComputacion.csv");
+            salir=true;
+            break;
+        case 2:
+            strcat(path, "IngenieriaEnSonido.csv");
+            salir=true;
+            break;
+        default:
+            printf(COLOR_RED"ERROR: Opción no encontrada\n"COLOR_RESET);
+            break;
+        }
+    }
+}
+//Formatea el dato obtenido de fgets 
+//le agrega un \0 para que no se agregue un salto de linea cuando se agrega la materia.
+char* formatearInput(char* nombre){
+    if ((strlen(nombre) > 0) && (nombre[strlen (nombre) - 1] == '\n'))
+        nombre[strlen (nombre) - 1] = '\0';   
+    return nombre;
+}
+
+//agrega materias a partir de un CSV
+void agregarMateriaEnArchivoCSV(char* path){
+    //Limpiamos el buffer
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+    
+    FILE *fh = fopen(path, "a");
+    if (fh == NULL) {
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo: %s.\n"COLOR_RESET, path);
+        return;
+    }
+    char nombre[100];
+    char anio[20];
+
+    printf("Nombre: ");
+    fgets(nombre, 100, stdin);
+    strcpy(nombre, formatearInput(nombre));
+    
+    printf("Año: ");
+    fgets(anio, 20, stdin);
+    strcpy(anio, formatearInput(anio));
+    
+    char result[120];
+    strcpy(result, "\n");
+    strcat(result, nombre);
+    strcat(result, ",");
+    strcat(result, anio);
+    
+    fputs(result, fh);
+    fflush(fh); // Forzar la escritura del búfer al archivo
+
+    fclose(fh); // Cierra el archivo
+}
+
+
+void obtenerRutaDelArchivoxCarrera(char* path, nodoListaEstudiante* estudiante){
+    if(estudiante->estudiante->carreraAnotada == computacion){
+        strcat(path, "IngenieriaEnComputacion.csv");
+    }else if(estudiante->estudiante->carreraAnotada == sonido){
+        strcat(path, "IngenieriaEnSonido.csv");
+    }
+}
+
+
+
+//Lee una línea, la separa por comas, e imprime ID, Nombre de Materia y Año (orden)
+void imprimirLineaDeArchivo(char *linea, int id){
+    char nombre[100];
+    char anio[100];
+    int j=0;
+    int i=0;
+
+    //obtenemos materia
+    while(linea[i] != ','){
+        nombre[j++] = linea[i++];
+    }
+    nombre[j] = '\0'; // Agregamos el terminador de cadena nulo
+    printf("(ID: %d) - Materia: %s, ", id, nombre);
+    i++; //salto la coma
+
+    j=0;
+    //Obtenemos grado
+    while(linea[i]!='\0'){
+        anio[j++] = linea[i++];
+    }
+
+    anio[j] = '\0'; // Agregamos el terminador de cadena nulo
+    int anioNro = atoi(anio);
+    printf("Año: %d  \n", anioNro);
+}
+
+//Lista las materias del archivo CSV
+void listarMaterias(char* path, int pagina){
+    FILE *input = fopen(path,"r"); 
+    int n = contarMaterias(path);
+    
+    if(n == 0){
+        printf(COLOR_RED"ERROR: No existe ninguna materia en la base de datos!"COLOR_RESET);
+        return;
+    }
+
+    if(n == -1){
+        return;
+    }
+
+    //APERTURA
+    if(input==NULL){
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo.\n"COLOR_RESET);
+        return;
+    }
+    //Llegamos a la segunda linea
+    char linea[1000];
+    fgets(linea,sizeof(linea),input); //Titulos de los campos 
+
+
+    int contador = 0;
+    int inicio = (pagina - 1) * 10;
+    int final = inicio + 10;
+    
+    while(contador < n && contador < final){
+        fgets(linea,1000,input);
+        if(contador >= inicio){
+            imprimirLineaDeArchivo(linea, contador+1);
+        }
+        contador++;
+    }
+}
+
+//Busca ID de materia (número de línea) desde un archivo.
+Materia *buscarIDMateriaArchivo (int id, char* path){
+    char nombre[100];
+    char anio[2];
+
+    FILE *input = fopen(path,"r"); //path de entrada (pEnt)
+    int n = contarMaterias(path);
+
+    if(id <= 0 || id > n){
+        printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada!\n"COLOR_RESET, id);
+        return NULL;
+    }
+    //APERTURA
+    if(input==NULL){
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo: %s\n"COLOR_RESET, path);
+        return NULL;
+    }
+    //Llegamos a la segunda linea
+    char linea[1000];
+    fgets(linea,sizeof(linea),input); //Titulos de los campos 
+
+    int contador = 1;
+    
+    while(contador <= n ){
+        fgets(linea,1000,input);
+        if(contador == id){
+            // Guardamos en nombre todos los caracteres hasta la coma
+            // Guardamos en año lo que le sigue a la coma
+            sscanf(linea, "%[^,],%s", nombre, anio);
+        }
+        contador++;
+    }
+    Materia *materia = crearMateria(nombre, atoi(anio));
+    return materia;
+}
+
+bool ListarMateriasDeArchivo(char* path,bool seleccionar_id){
+    int cantidadDeMaterias = contarMaterias(path);
+    if(cantidadDeMaterias == -1){
+        return false;
+    }
+    if(cantidadDeMaterias == 0){
+        printf(COLOR_RED"ERROR: No existe ninguna materia."COLOR_RESET);
+        return false;
+    }
+
+    int opcion;
+    int pagina = 1;
+    int materiasPorPagina = 10;
+    int numPaginaMaxima = (int) ceil((double) cantidadDeMaterias / materiasPorPagina);
+    
+    bool salir = false;
+    while(!salir){
+        printf("Lista de materias:\n");
+        listarMaterias(path, pagina);
+        printf("\n\033[1m[Página %d/%d]\033[0m\n", pagina, numPaginaMaxima);
+        
+        printf("\033[1m--------------------------------------------------------------------------------------------\n");
+        printf("0. Volver\t");
+        printf("1. Página siguiente \t");
+        printf("2. Página anterior \t");
+        if(!seleccionar_id){
+            printf("3. Seleccionar ID de materia\t");
+        }
+        printf("\n----------------------------------------------------------------------------------------------------\033[0m\n");
+
+        printf("\nIngrese una opcion: ");
+        scanf("%d", &opcion);
+        switch (opcion)
+        {
+        case 0:
+            salir = true;
+            break;
+        case 1:
+            if(pagina == numPaginaMaxima)
+                printf(COLOR_RED"No existen más registros.\n"COLOR_RESET);
+            else pagina++;
+            break;
+        case 2:
+            if(pagina == 1)
+                printf(COLOR_RED"No hay registros previos.\n"COLOR_RESET);
+            else pagina--;
+            break;
+        case 3:
+            if(!seleccionar_id){
+                return true;
+            }
+        default:
+            printf(COLOR_RED"ERROR: Opcion no encontrada\n"COLOR_RESET);
+        }
+    }
+
+    return false; //Si el usuario no selecciono un ID
+}
+
+void anotarMateria(Materia *materiaAnotar, nodoListaEstudiante *nodoEstudiante, char* path) {    
+    nodoListaMateria *cursor = nodoEstudiante->estudiante->materias;
+    while(cursor != NULL){
+        //Si el estudiante ya esta anotado en la materia
+        if(cursor->materia->nombre != NULL && strcmp(cursor->materia->nombre, materiaAnotar->nombre) == 0){
+            printf(COLOR_RED "ERROR: La materia: '%s' ya fue cursada o bien ya se encuentra inscripto\n" COLOR_RESET, materiaAnotar->nombre);
+            return;
+        }
+        cursor = cursor->proximo;
+    }
+    
+    if(ValidarMateria(materiaAnotar, nodoEstudiante, path)){
+        darAltaMateria(&nodoEstudiante->estudiante->materias,materiaAnotar);
+        printf("Inscripción exitosa\n", materiaAnotar->nombre);
     }
 }
