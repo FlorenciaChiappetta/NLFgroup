@@ -1,6 +1,10 @@
 {
     "files.associations": {
-        "lista": "c"
+        "lista": "c",
+        "estudiantes.h": "c",
+        "materias.h": "c",
+        "string.h": "c",
+        "ctype.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

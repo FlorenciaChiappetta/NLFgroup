@@ -1,222 +1,179 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "menu/menu.h"
+#include "menu.h"
+#include "estudiantes.h"
+#include "estructuras.h"
 
 
-/* Lo dejo como un README
-
-Hay que:
-
-1- crear el tipo de dato estudiante y los metodos asociados...
-el tipo de dato tiene que tener:
-nombre
-apellido
-legajo/matricula
-edad
-cursada?
-universidad?
-etc
-
-metodos:
-anotarse a materias
-rendir la materia
-un getter de datos personales
-un getter de notas por materia
-eliminar estudiante..
-uno para calcular el promedio 
-y un aprobo materia o cursada algo asi.. 
-
-2- crear el tipo de dato materia..
-
-deberia tener codigo de materia y nombre minimo
-cuatrimestre?
-
-sus respectivos getters
-un agregar materia
-un eliminar materia
-equivalencias hacemos? o correlativas no sé
-
-3-crear un tipo de dato Curso/cursada 
-ahi encerramos materias estudiantes etc.
+nodoListaEstudiante *listaDeEstudiantes = NULL;
+nodoListaEstudiante *estudianteSeleccionado = NULL;
 
 
-4- qué guardamos en cada nodo???
+void realizarConsultas() {
+    int opcionElegida;
+    int running = 1;
+    scanf("%d", &opcionElegida);
+    while (running) {
+        menuOpcionesConsultas();
+        scanf("%d", &opcionElegida);
+        switch (opcionElegida) {
+            case 4:
+                running = 0;
+                break;
+            case 1:
+                printf("Elija una opción\n");
+                printf("1. Buscar estudiante por nombre\n");
+                printf("2. Buscar estudiante por legajo\n");
+                int opcion;
+                scanf("%d", &opcion);
+                    if (opcion == 1){
+                            printf("Ingrese el nombre del alumno. ");
+                            char nombreAlumno[100];
+                            scanf("%s", nombreAlumno);
+                            buscarEstudiantePorNombre(&listaDeEstudiantes, nombreAlumno);
+                        }else if (opcion == 2){
+                            printf("Ingrese el numero de legajo.\n");
+                            int legajo;
+                            scanf("%d", &legajo);
+                            buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo);
+                        }
+                break;
+            case 2:
+                //solicitamos legajo
+                printf("Ingrese el numero de legajo.\n");
+                int legajo1;
+                scanf("%d", &legajo1);
+                nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajo1); 
+                consultarPromedio(estudiante->estudiante->materias); 
+                break;
+            case 3:
+                //solicitamos legajo
+                printf("Ingrese el numero de legajo.\n");
+                int legajo2;
+                scanf("%d", &legajo2);
+                nodoListaEstudiante* estudiante2 = validarLegajo(&listaDeEstudiantes, legajo2); 
+                getListaMaterias(estudiante2->estudiante->materias); 
+                break;
+            default:
+                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
+                break;
+        }
+    }
+}
 
-5- Persistencia en CSV me va.. 
-podemos hacer un csv para cargar el masivo las materias y alumnos.
-
-*/
-
-int scan();
-
-void crear_materia();
-
-void crear_estudiante();
-
-void inscribir_estudiante();
-
-void rendir_estudiante();
-
-void consultar_materias();
-
-void consultar_estudiantes();
-
-void consultar_promedio_estudiante();
-
-void listar_estudiantes_y_materias();
-
-void materia_aprobada();
-
-void realizar_consultas();
-
-void abm_registros();
-
-void estudiante_promedio_print();
-
-void eliminar_materia();
-
-void eliminar_estudiante();
-
+void abmRegistros() {
+    int running = 1;
+    int opcionElegida;
+    while (running) {
+        menuOpcionesABM();
+        scanf("%d", &opcionElegida);
+        
+        switch (opcionElegida) {
+            case 1:
+                printf("Seleccione la carrera:\n"); 
+                char path[116] = ".\\materiasXcarreras\\";
+                elegirCarrera(path);
+                agregarMateriaEnArchivoCSV(path);
+                break;
+            case 2:
+                printf("Ingrese la informacion del estudiante:\n");
+                char nombre[100];
+                printf("Nombre: ");
+                scanf("%s", nombre);
+                char apellido[100];
+                printf("Apellido: ");
+                scanf("%s", apellido);
+                int edad[2];
+                printf("Edad:");
+                scanf("%d", &edad);
+                int legajo;
+                printf("Legajo: ");
+                scanf("%d", &legajo);
+                int opcionCarrera;
+                carrera carreraAAnotarse;
+                printf("\n\033[1m--OFERTA ACADEMICA--\033[0m\n");
+                printf("1) Ingeniería en computación\n2)Ingeniería en sonido\n");
+                printf("Elegir carrera: ");
+                scanf("%d",&opcionCarrera);
+                if(opcionCarrera==1){
+                    carreraAAnotarse=computacion;
+                }else if(opcionCarrera==2){
+                    carreraAAnotarse=sonido;
+                }
+                else{
+                    printf(COLOR_RED"ERROR: Carrera no encontrada"COLOR_RESET);
+                    break;
+                }
+                
+                if (listaDeEstudiantes == NULL){  
+                    // Compruebo unicamente la ordenada por edad ya que ambas listas van de la mano
+                    listaDeEstudiantes = crearListaEstudiantes(); 
+                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);    
+                    darAltaEstudiante(&listaDeEstudiantes, aux);    
+                }   else{
+                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);    
+                    darAltaEstudiante(&listaDeEstudiantes, aux);
+                }
+                break;
+            case 3:
+                    printf("Ingrese su legajo: ");
+                    int legajoEst;
+                    scanf("%d", &legajoEst);
+                    nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
+                    printf("Seleccione la carrera:\n");
+                    char pathListar[116] = ".\\materiasXcarreras\\";
+                    // Se elige la carrera (el csv)
+                    obtenerRutaDelArchivoxCarrera(pathListar,estudiante);
+                    // Se paginan las materias del csv, si el usuario selecciona una materia
+                    bool ID = ListarMateriasDeArchivo(pathListar,false);
+                    if(ID){ //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
+                        printf("Indique ID: ");
+                        int idAnotar;
+                        scanf("%d",&idAnotar);
+                        // En base al id de la materia introducida, se busca y obtiene esa materia
+                        Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, pathListar);
+                        
+                        if(materiaAAnotarse != NULL){ //Si se encontro la materia..
+                            anotarMateria(materiaAAnotarse, estudiante,pathListar);
+                        }
+                    }
+                    break;
+            case 4:
+            //hacer
+                break;
+            case 5:
+                running = 0;
+                break;
+            default:
+                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
+        }
+    }
+}
 
 
 int main() {
-
-    setbuf(stdout, 0);
-
-    menu_principal();
     int running = 1;
-
+    int opcionElegida;
     while (running) {
-        switch (scan()) {
+        Bienvenida();
+        scanf("%d", &opcionElegida);
+        switch (opcionElegida) {
             case 1:
-                realizar_consultas();
+                realizarConsultas();
                 break;
             case 2:
-                abm_registros();
+                abmRegistros();
                 break;
-            case 0:
+            case 3:
                 running = 0;
                 break;
             default:
                 printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
                 break;
         }
-        menu_opciones();
     }
-    menu_finalizar();
+    menuFinalizar();
+
     return 0;
-}
-
-
-int scan() {
-    //clean del buffer
-    fflush(stdin);
-
-
-    char option[4];
-    fgets(option, 4, stdin);
-    fflush(stdin);
-    printf("\n");
-    // seteamos como integer 
-    return (int) strtol(option, NULL, 10);
-}
-
-
-void realizar_consultas() {
-    int running = 1;
-    while (running) {
-        menu_print_query_opciones();
-        switch (scan()) {
-            case 0:
-                running = 0;
-                break;
-            case 1:
-               consultar_materias();
-                break;
-            case 2:
-                consultar_estudiantes();
-                break;
-            case 3:
-                consultar_promedio_estudiante();
-                break;
-            case 4:
-                listar_estudiantes_y_materias();
-                break;
-            case 5:
-                materia_aprobada();
-                break;
-            default:
-                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
-                break;
-        }
-    }
-}
-
-void abm_registros() {
-    int running = 1;
-    while (running) {
-        menu_print_abm_opciones();
-        switch (scan()) {
-            case 1:
-                crear_materia();
-                break;
-            case 2:
-                crear_estudiante();
-                break;
-            case 3:
-                inscribir_estudiante();
-                break;
-            case 4:
-                rendir_estudiante();
-                break;
-            case 5:
-                eliminar_materia();
-                break;
-            case 6:
-                eliminar_estudiante();
-                break;
-            case 0:
-                running = 0;
-                break;
-            default:
-                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
-        }
-    }
-}
-
-void crear_materia() {
-}
-
-void crear_estudiante() {
-}
-
-void inscribir_estudiante() { 
-}
-
-
-void rendir_estudiante() {
-}
-
-void listar_estudiantes_y_materias() {
-}
-
-void consultar_materias() {
-}
-
-
-void consultar_estudiantes() {
-}
-
-void consultar_promedio_estudiante() {
-}
-
-
-void materia_aprobada() {   
-}
-
-void eliminar_materia() {
-}
-
-void eliminar_estudiante() {
 }
