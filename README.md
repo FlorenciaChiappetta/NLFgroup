@@ -39,3 +39,7 @@ Persistencia en CSV
 -Implementación de lista alumno  -Lean
 -Implementación de lista materia -AL FINAL
 -Menú, toda la lógica que consume a las lista como servicio -Nacho
+
+
+
+Error en la función 1 y en la funcion 4 
