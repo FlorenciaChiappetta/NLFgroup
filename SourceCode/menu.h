@@ -9,6 +9,7 @@ void menuOpcionesABM();
 void menuOpcionesConsultas();
 
 
+// TODO review naming
 void Bienvenida() {
     printf("______________________________________________\n");
     printf("Bienvenida/o al Sistema de Gestion de Estudiantes\n");
@@ -29,7 +30,7 @@ void menuPrincipal() {
 }
 
 void menuOpcionesABM() {
-    printf("Elija una de las siguientes opciones:\n\n");
+    printf("\nElija una de las siguientes opciones:\n\n");
     printf("1 Agregar materia\n");
     printf("2 Agregar estudiante\n");
     printf("3 Inscribir estudiante en materia\n");
@@ -39,7 +40,7 @@ void menuOpcionesABM() {
 }
 
 void menuOpcionesConsultas() {
-    printf("------- Consultas--------- \n");
+    printf("\n------- Consultas--------- \n");
     printf("Elija una de las siguientes opciones:\n\n");
     printf("1 Buscar estudiantes\n");
     printf("2 Obtener promedio de estudiante\n");
