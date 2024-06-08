@@ -21,7 +21,7 @@ void realizarConsultas() {
             case 4:
                 running = 0;
                 break;
-            case 2:
+            case 1:
                 printf("Elija una opción\n");
                 printf("1. Buscar estudiante por nombre\n");
                 printf("2. Buscar estudiante por legajo\n");
@@ -39,7 +39,7 @@ void realizarConsultas() {
                             buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo);
                         }
                 break;
-            case 3:
+            case 2:
                 //solicitamos legajo
                 printf("Ingrese el numero de legajo.\n");
                 int legajo1;
@@ -47,7 +47,7 @@ void realizarConsultas() {
                 nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajo1); 
                 consultarPromedio(estudiante->estudiante->materias); 
                 break;
-            case 4:
+            case 3:
                 //solicitamos legajo
                 printf("Ingrese el numero de legajo.\n");
                 int legajo2;
