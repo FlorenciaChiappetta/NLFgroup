@@ -24,9 +24,9 @@ void menuFinalizar(){
 void menuPrincipal() {
 
     printf("Elija una de las siguientes opciones para continuar:\n\n");
-    printf("1: Realizar una consulta \n");
-    printf("2: Agregar, borrar o modificar registros del sistema\n");
-    printf("3: Salir\n");
+    printf("2: Realizar una consulta \n");
+    printf("3: Agregar, borrar o modificar registros del sistema\n");
+    printf("4: Salir\n");
 }
 
 void menuOpcionesABM() {
@@ -42,7 +42,7 @@ void menuOpcionesABM() {
 void menuOpcionesConsultas() {
     printf("\n------- Consultas--------- \n");
     printf("Elija una de las siguientes opciones:\n\n");
-    printf("1 Buscar estudiantes\n");
+    printf("1 Buscar eudiantes\n");
     printf("2 Obtener promedio de estudiante\n");
     printf("3 Obtener materias de estudiante\n");
     printf("4 Volver al menu principal\n");

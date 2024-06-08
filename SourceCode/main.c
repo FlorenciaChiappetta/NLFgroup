@@ -4,8 +4,6 @@
 #include "menu.h"
 #include "estudiantes.h"
 #include "estructuras.h"
-//#include "MenuOpt/menu_opt.h"
-#include "MenuOpt/menu_opt.c"
 
 
 nodoListaEstudiante *listaDeEstudiantes = NULL;
@@ -15,7 +13,7 @@ nodoListaEstudiante *estudianteSeleccionado = NULL;
 void realizarConsultas() {
     int opcionElegida;
     int running = 1;
-//    scanf("%d", &opcionElegida);
+    scanf("%d", &opcionElegida);
     while (running) {
         menuOpcionesConsultas();
         scanf("%d", &opcionElegida);
@@ -23,7 +21,7 @@ void realizarConsultas() {
             case 4:
                 running = 0;
                 break;
-            case 1:
+            case 2:
                 printf("Elija una opción\n");
                 printf("1. Buscar estudiante por nombre\n");
                 printf("2. Buscar estudiante por legajo\n");
@@ -41,21 +39,21 @@ void realizarConsultas() {
                             buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo);
                         }
                 break;
-            case 2:
+            case 3:
                 //solicitamos legajo
                 printf("Ingrese el numero de legajo.\n");
                 int legajo1;
                 scanf("%d", &legajo1);
-                nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajo1);
-                consultarPromedio(estudiante->estudiante->materias);
+                nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajo1); 
+                consultarPromedio(estudiante->estudiante->materias); 
                 break;
-            case 3:
+            case 4:
                 //solicitamos legajo
                 printf("Ingrese el numero de legajo.\n");
                 int legajo2;
                 scanf("%d", &legajo2);
-                nodoListaEstudiante* estudiante2 = validarLegajo(&listaDeEstudiantes, legajo2);
-                getListaMaterias(estudiante2->estudiante->materias);
+                nodoListaEstudiante* estudiante2 = validarLegajo(&listaDeEstudiantes, legajo2); 
+                getListaMaterias(estudiante2->estudiante->materias); 
                 break;
             default:
                 printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
@@ -70,10 +68,10 @@ void abmRegistros() {
     while (running) {
         menuOpcionesABM();
         scanf("%d", &opcionElegida);
-
+        
         switch (opcionElegida) {
             case 1:
-                printf("Seleccione la carrera:\n");
+                printf("Seleccione la carrera:\n"); 
                 char path[116] = ".\\materiasXcarreras\\";
                 elegirCarrera(path);
                 agregarMateriaEnArchivoCSV(path);
@@ -107,14 +105,14 @@ void abmRegistros() {
                     printf(COLOR_RED"ERROR: Carrera no encontrada"COLOR_RESET);
                     break;
                 }
-
-                if (listaDeEstudiantes == NULL){
+                
+                if (listaDeEstudiantes == NULL){  
                     // Compruebo unicamente la ordenada por edad ya que ambas listas van de la mano
-                    listaDeEstudiantes = crearListaEstudiantes();
-                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);
-                    darAltaEstudiante(&listaDeEstudiantes, aux);
+                    listaDeEstudiantes = crearListaEstudiantes(); 
+                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);    
+                    darAltaEstudiante(&listaDeEstudiantes, aux);    
                 }   else{
-                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);
+                    Estudiante *aux = crearEstudiante(nombre,apellido,legajo,edad, carreraAAnotarse);    
                     darAltaEstudiante(&listaDeEstudiantes, aux);
                 }
                 break;
@@ -122,18 +120,7 @@ void abmRegistros() {
                     printf("Ingrese su legajo: ");
                     int legajoEst;
                     scanf("%d", &legajoEst);
-
-                    // TODO crear lista de estudiantes si la misma no existe
-//                    if (listaDeEstudiantes == NULL){
-//                        listaDeEstudiantes = crearListaEstudiantes();
-//                    }
-
                     nodoListaEstudiante* estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
-                    if(estudiante == NULL){
-                        printf("No hay estudiantes con ese Legajo.\n\n");
-                        return;
-                    }
-                    
                     printf("Seleccione la carrera:\n");
                     char pathListar[116] = ".\\materiasXcarreras\\";
                     // Se elige la carrera (el csv)
@@ -146,15 +133,14 @@ void abmRegistros() {
                         scanf("%d",&idAnotar);
                         // En base al id de la materia introducida, se busca y obtiene esa materia
                         Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, pathListar);
-
+                        
                         if(materiaAAnotarse != NULL){ //Si se encontro la materia..
                             anotarMateria(materiaAAnotarse, estudiante,pathListar);
                         }
                     }
                     break;
             case 4:
-                // TODO hacer
-                printf("La funcionalidad 'Registrar nota' no se encuentra habilitada por el momento.");
+            //hacer
                 break;
             case 5:
                 running = 0;
@@ -168,14 +154,7 @@ void abmRegistros() {
 
 int main() {
     int running = 1;
-    int opcionElegida = -1;
-//    menu_opt *opcionElegida;
-//
-//    opcionElegida = new_menu_opt("opcion", 1);
-//
-//    printf("label %s\n", opcionElegida->label);
-//    printf("value %d", opcionElegida->value);
-
+    int opcionElegida;
     while (running) {
         Bienvenida();
         scanf("%d", &opcionElegida);
