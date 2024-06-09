@@ -58,6 +58,27 @@ void getEstudiante(Estudiante* estudiante) {
     printf("Legajo: %d\n\n", estudiante->legajo);
 }   
 
+
+
+void listaDeMaterias(nodoListaMateria *lista, int pagina) {
+    int contador = 0;
+    int inicio = (pagina - 1) * 2; // 2
+    int final = inicio + 2; //4
+    nodoListaMateria *cursor = lista;
+    
+    if(lista->materia == NULL){
+        printf("La lista esta vacia!");
+        return;
+    }
+    
+    while (cursor != NULL && contador < final) {
+        if(contador >= inicio){
+          printf("[ID: %d, Nombre: %s, Anio: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+        }
+        contador++;
+        cursor = cursor->proximo;
+    }
+}
 //devuelve 1 si la edad del param1 es mayor o igual a la del segundo param, sino, devuelve 0
 int compararEdad(int *edad1, int *edad2) {
    if (edad1 >= edad2) {
@@ -126,17 +147,17 @@ void darAltaEstudiante(nodoListaEstudiante **lista, Estudiante* nuevoEstudiante)
 // Se ingresan las 3 notas que el estudiante obtuvo durante su cursada.
 //   Las guardamos junto al promedio de las 3 notas.
 
-void rendirMateria(nodoListaMateria* materia_a_rendir){
-    if(materia_a_rendir->materia->promedio==0 || materia_a_rendir->materia->promedio < 4){
+void rendirMateria(nodoListaMateria* materiaArendir){
+    if(materiaArendir->materia->promedio==0 || materiaArendir->materia->promedio < 4){
         printf("Nota de primer parcial: ");
-        scanf("%d",&materia_a_rendir->materia->notas[0]);
+        scanf("%d",&materiaArendir->materia->notas[0]);
         printf("Nota de segundo parcial: ");
-        scanf("%d",&materia_a_rendir->materia->notas[1]);
+        scanf("%d",&materiaArendir->materia->notas[1]);
         printf("Nota de final: ");
-        scanf("%d",&materia_a_rendir->materia->notas[2]);
-        materia_a_rendir->materia->promedio = (float)(materia_a_rendir->materia->notas[0] + materia_a_rendir->materia->notas[1] + materia_a_rendir->materia->notas[2]) / 3.0;
+        scanf("%d",&materiaArendir->materia->notas[2]);
+        materiaArendir->materia->promedio = (float)(materiaArendir->materia->notas[0] + materiaArendir->materia->notas[1] + materiaArendir->materia->notas[2]) / 3.0;
     }else{
-        printf(COLOR_RED "ERROR: Materia: '%s' ya rendida\n" COLOR_RESET, materia_a_rendir->materia->nombre);
+        printf(COLOR_RED "ERROR: Materia: '%s' ya rendida\n" COLOR_RESET, materiaArendir->materia->nombre);
     }
 }
 
@@ -537,7 +558,7 @@ void listarMaterias(char* path, int pagina){
     int n = contarMaterias(path);
     
     if(n == 0){
-        printf(COLOR_RED"ERROR: No existe ninguna materia en la base de datos!"COLOR_RESET);
+        printf(COLOR_RED"ERROR: No existe ninguna materia en la base de datos"COLOR_RESET);
         return;
     }
 
@@ -577,7 +598,7 @@ Materia *buscarIDMateriaArchivo (int id, char* path){
     int n = contarMaterias(path);
 
     if(id <= 0 || id > n){
-        printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada!\n"COLOR_RESET, id);
+        printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada\n"COLOR_RESET, id);
         return NULL;
     }
     //APERTURA
@@ -604,7 +625,7 @@ Materia *buscarIDMateriaArchivo (int id, char* path){
     return materia;
 }
 
-bool ListarMateriasDeArchivo(char* path,bool seleccionar_id){
+bool ListarMaterias(char* path,bool seleccionar_id){
     int cantidadDeMaterias = contarMaterias(path);
     if(cantidadDeMaterias == -1){
         return false;
@@ -621,8 +642,8 @@ bool ListarMateriasDeArchivo(char* path,bool seleccionar_id){
     
     bool salir = false;
     while(!salir){
-        printf("Lista de materias:\n");
-        listarMaterias(path, pagina);
+        printf("\nLista de materias:\n");
+        ListarMaterias(path, pagina);
         printf("\n\033[1m[Página %d/%d]\033[0m\n", pagina, numPaginaMaxima);
         
         printf("\033[1m--------------------------------------------------------------------------------------------\n");
@@ -643,12 +664,12 @@ bool ListarMateriasDeArchivo(char* path,bool seleccionar_id){
             break;
         case 1:
             if(pagina == numPaginaMaxima)
-                printf(COLOR_RED"No existen más registros.\n"COLOR_RESET);
+                printf(COLOR_RED"\nNo existen mas registros.\n"COLOR_RESET);
             else pagina++;
             break;
         case 2:
             if(pagina == 1)
-                printf(COLOR_RED"No hay registros previos.\n"COLOR_RESET);
+                printf(COLOR_RED"\nNo existen registros previos.\n"COLOR_RESET);
             else pagina--;
             break;
         case 3:
@@ -656,12 +677,13 @@ bool ListarMateriasDeArchivo(char* path,bool seleccionar_id){
                 return true;
             }
         default:
-            printf(COLOR_RED"ERROR: Opcion no encontrada\n"COLOR_RESET);
+            printf(COLOR_RED"\nERROR: Opcion no encontrada\n"COLOR_RESET);
         }
     }
 
     return false; //Si el usuario no selecciono un ID
 }
+
 
 void anotarMateria(Materia *materiaAnotar, nodoListaEstudiante *nodoEstudiante, char* path) {    
     nodoListaMateria *cursor = nodoEstudiante->estudiante->materias;
@@ -676,6 +698,69 @@ void anotarMateria(Materia *materiaAnotar, nodoListaEstudiante *nodoEstudiante, 
     
     if(ValidarMateria(materiaAnotar, nodoEstudiante, path)){
         darAltaMateria(&nodoEstudiante->estudiante->materias,materiaAnotar);
-        printf("Inscripción exitosa\n", materiaAnotar->nombre);
+        printf("\nInscripción exitosa.\n", materiaAnotar->nombre);
     }
 }
+
+int obtenerLenghtMaterias(nodoListaMateria **lista) {
+    int largo = 0;
+    nodoListaMateria *cursor = *lista;
+    while (cursor != NULL) {
+        cursor = cursor->proximo;
+        largo++;
+    }
+    return largo;
+}
+
+bool ListarMateriasEstudiante(nodoListaMateria *lista, bool seleccionarID){
+
+    int cantidadDeMaterias = obtenerLenghtMaterias(&lista);
+    if(cantidadDeMaterias == 0){
+        printf("No existe ninguna materia.");
+        return false;
+    }
+
+    int opcion;
+    int pagina = 1;
+    int materiasPorPagina = 2;
+    int numPaginaMaxima = (int) ceil((double) cantidadDeMaterias / materiasPorPagina);
+
+    bool salir = false;
+    while(!salir){
+        printf("\nLista de materias anotadas:\n");
+        listaDeMaterias(lista, pagina);
+        printf("\n\033[1m[Pagina %d/%d]\033[0m\n", pagina, numPaginaMaxima);
+        
+        printf("\033[1m----------------------------------------------paginado----------------------------------------------\n");
+        printf("0. Volver al menú\t");
+        printf("1. Siguiente pagina\t");
+        printf("2. Anterior pagina\t");
+        if(!seleccionarID){
+            printf("4. Seleccionar ID de materia\t");
+        }
+        printf("\n----------------------------------------------------------------------------------------------------\033[0m\n");
+
+        printf("Ingrese una opcion: ");
+        scanf("%d", &opcion);
+        switch (opcion)
+        {
+        case 0:
+            salir = true;
+            break;
+        case 1:
+            if(pagina == numPaginaMaxima)
+                printf(COLOR_RED"ERROR: Estas en la ultima pagina\n"COLOR_RESET);
+            else pagina++;
+            break;
+        case 2:
+            if(pagina == 1)
+                printf(COLOR_RED"ERROR: Estas en la primer pagina\n"COLOR_RESET);
+            else pagina--;
+            break;
+        default:
+                printf(COLOR_RED"ERROR: Opcion no encontrada\n"COLOR_RESET);
+        }
+    }
+    return false; //Si el usuario no selecciono un ID
+}
+

@@ -28,12 +28,12 @@ void realizarConsultas() {
                 int opcion;
                 scanf("%d", &opcion);
                     if (opcion == 1){
-                            printf("Ingrese el nombre del alumno. ");
+                            printf("Ingrese el nombre del alumno:\n");
                             char nombreAlumno[100];
                             scanf("%s", nombreAlumno);
                             buscarEstudiantePorNombre(&listaDeEstudiantes, nombreAlumno);
                         }else if (opcion == 2){
-                            printf("Ingrese el numero de legajo.\n");
+                            printf("Ingrese el numero de legajo:\n");
                             int legajo;
                             scanf("%d", &legajo);
                             buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo);
@@ -126,7 +126,7 @@ void abmRegistros() {
                     // Se elige la carrera (el csv)
                     obtenerRutaDelArchivoxCarrera(pathListar,estudiante);
                     // Se paginan las materias del csv, si el usuario selecciona una materia
-                    bool ID = ListarMateriasDeArchivo(pathListar,false);
+                    bool ID = ListarMaterias(pathListar,false);
                     if(ID){ //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
                         printf("Indique ID: ");
                         int idAnotar;
@@ -140,7 +140,28 @@ void abmRegistros() {
                     }
                     break;
             case 4:
-            //hacer
+                //elige el estudiante
+                printf("Ingrese su legajo: ");
+                int legajoEst2;
+                scanf("%d", &legajoEst);
+                nodoListaEstudiante* estudiante2 = validarLegajo(&listaDeEstudiantes, legajoEst2);
+                //elige la materia
+                 printf("Seleccionar ID de materia:\n");
+                bool pedirIDmateria = ListarMateriasEstudiante(estudiante2->estudiante->materias, false);
+                    if(pedirIDmateria){ //Si el usuario eligio la opcion 'Seleccionar ID de materia'
+                        printf("Indique ID: ");
+                        int idMateria;
+                        scanf("%d",&idMateria);
+                        // En base al id de la materia introducida, se busca y obtiene esa materia
+                        nodoListaMateria *materia = buscarMateriaPorID(estudiante->estudiante->materias, idMateria);
+                        //Si no se encontro la materia en base al ID
+                        if(materia == NULL){ 
+                            printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada\n"COLOR_RESET, idMateria);
+                            break;
+                        }
+                        rendirMateria(materia);
+                    }
+                    break;
                 break;
             case 5:
                 running = 0;
