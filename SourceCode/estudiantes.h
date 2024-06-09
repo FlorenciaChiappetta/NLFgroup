@@ -720,49 +720,51 @@ bool ListarMateriasEstudiante(nodoListaMateria *lista, bool seleccionarID){
         return false;
     }
 
-    int opcion;
     int pagina = 1;
     int materiasPorPagina = 2;
     int numPaginaMaxima = (int) ceil((double) cantidadDeMaterias / materiasPorPagina);
 
     bool salir = false;
     while(!salir){
-        printf("\nLista de materias anotadas:\n");
+        printf("\nLista de materias:\n");
         listaDeMaterias(lista, pagina);
-        printf("\n\033[1m[Pagina %d/%d]\033[0m\n", pagina, numPaginaMaxima);
+        printf("\n\033[1m[Página %d/%d]\033[0m\n", pagina, numPaginaMaxima);
 
-        printf("\033[1m----------------------------------------------paginado----------------------------------------------\n");
-        printf("0. Volver al menú\t");
-        printf("1. Siguiente pagina\t");
-        printf("2. Anterior pagina\t");
+        printf("\033[1m--------------------------------------------------------------------------------------------\n");
+        printf("0. Volver\t");
+        printf("1. Página siguiente \t");
+        printf("2. Página anterior \t");
         if(!seleccionarID){
             printf("3. Seleccionar ID de materia\t");
         }
         printf("\n----------------------------------------------------------------------------------------------------\033[0m\n");
 
-        printf("Ingrese una opcion: ");
-        scanf("%d", &opcion);
+        printf("\nIngrese una opcion: ");
+        int opcion = validateIntInput();
         switch (opcion)
         {
-        case 0:
-            salir = true;
-            break;
-        case 1:
-            if(pagina == numPaginaMaxima)
-                printf(COLOR_RED"ERROR: Estas en la ultima pagina\n"COLOR_RESET);
-            else pagina++;
-            break;
-        case 2:
-            if(pagina == 1)
-                printf(COLOR_RED"ERROR: Estas en la primer pagina\n"COLOR_RESET);
-            else pagina--;
-            break;
-        case 3:
-            break;
-        default:
-                printf(COLOR_RED"ERROR: Opcion no encontrada\n"COLOR_RESET);
+            case 0:
+                salir = true;
+                break;
+            case 1:
+                if(pagina == numPaginaMaxima)
+                    printf(COLOR_RED"\nNo existen mas registros.\n"COLOR_RESET);
+                else pagina++;
+                break;
+            case 2:
+                if(pagina == 1)
+                    printf(COLOR_RED"\nNo existen registros previos.\n"COLOR_RESET);
+                else pagina--;
+                break;
+            case 3:
+                if(!seleccionarID){
+                    return true;
+                }
+            default:
+                printf(COLOR_RED"\nERROR: Opcion no encontrada\n"COLOR_RESET);
         }
     }
+
     return false; //Si el usuario no selecciono un ID
 }
 
