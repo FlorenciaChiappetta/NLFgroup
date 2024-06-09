@@ -82,7 +82,7 @@ void abmRegistros() {
         switch (opcionElegida) {
             case 1:
                 printf("Seleccione la carrera:\n");
-                char path[116] = ".\\materiasXcarreras\\";
+                char path[116] = "./materiasXcarreras/";
                 elegirCarrera(path);
                 agregarMateriaEnArchivoCSV(path);
                 break;
@@ -135,7 +135,7 @@ void abmRegistros() {
                 }
 
                 printf("Seleccione la carrera:\n");
-                char pathListar[116] = ".\\materiasXcarreras\\";
+                char pathListar[116] = "./materiasXcarreras/";
                 // Se elige la carrera (el csv)
                 obtenerRutaDelArchivoxCarrera(pathListar, estudiante);
                 // Se paginan las materias del csv, si el usuario selecciona una materia
