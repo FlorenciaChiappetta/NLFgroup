@@ -152,28 +152,28 @@ void abmRegistros() {
 }
 
 
-int main() {
-    int running = 1;
-    int opcionElegida;
-    while (running) {
-        Bienvenida();
-        scanf("%d", &opcionElegida);
-        switch (opcionElegida) {
-            case 1:
-                realizarConsultas();
-                break;
-            case 2:
-                abmRegistros();
-                break;
-            case 3:
-                running = 0;
-                break;
-            default:
-                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
-                break;
-        }
-    }
-    menuFinalizar();
+// int main() {
+//     int running = 1;
+//     int opcionElegida;
+//     while (running) {
+//         Bienvenida();
+//         scanf("%d", &opcionElegida);
+//         switch (opcionElegida) {
+//             case 1:
+//                 realizarConsultas();
+//                 break;
+//             case 2:
+//                 abmRegistros();
+//                 break;
+//             case 3:
+//                 running = 0;
+//                 break;
+//             default:
+//                 printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
+//                 break;
+//         }
+//     }
+//     menuFinalizar();
 
-    return 0;
-}
+//     return 0;
+// }
