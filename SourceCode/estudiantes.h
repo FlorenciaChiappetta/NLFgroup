@@ -828,7 +828,7 @@ int obtenerLenghtEstudiantes(nodoListaEstudiante **lista) {
 void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int edadMinima[2], int edadMaxima[2]){
     nodoListaEstudiante *cursor = *lista;
  while(cursor != NULL){
-    if (cursor->estudiante->edad >= edadMinima || cursor->estudiante->edad <= edadMaxima){
+    if (cursor->estudiante->edad >= edadMinima && cursor->estudiante->edad <= edadMaxima){
         printf("[Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
     }
  }
