@@ -825,7 +825,7 @@ int obtenerLenghtEstudiantes(nodoListaEstudiante **lista) {
 }
 
 
-void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int edadMinima[2], int edadMaxima[2]){
+void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int* edadMinima, int* edadMaxima){
     nodoListaEstudiante *cursor = *lista;
  while(cursor != NULL){
     if (cursor->estudiante->edad >= edadMinima && cursor->estudiante->edad <= edadMaxima){
