@@ -8,7 +8,7 @@
 
 nodoListaEstudiante *listaDeEstudiantes = NULL;
 nodoListaEstudiante *estudianteSeleccionado = NULL;
-char path[116] = "./materiasXcarreras/";
+//char path[116] = "./materiasXcarreras/";
 
 void realizarConsultas() {
     int running = 1;
@@ -91,11 +91,15 @@ void abmRegistros() {
         switch (opcionElegida) {
             case 1:
                 printf("Seleccione la carrera:\n");
-                elegirCarrera(path);
-                agregarMateriaEnArchivoCSV(path);
+                char path1[116] = "./materiasXcarreras/";
+                elegirCarrera(path1);
+                agregarMateriaEnArchivoCSV(path1);
                 break;
             case 2:
-                eliminarMateriaEnArchivoCSV(path);
+                // TODO hacer eliminar materia
+                printf("La funcionalidad 'Eliminar Materia' no está disponible por el momento.\n");
+                // char path2[116] = "./materiasXcarreras/";
+                // eliminarMateriaEnArchivoCSV(path2);
                 break;
             case 3:
                 printf("Ingrese la informacion del estudiante:\n");
@@ -138,7 +142,8 @@ void abmRegistros() {
                 break;
 
             case 4:
-            //hacer eliminar
+                // TODO hacer eliminar estudiante
+                printf("La funcionalidad 'Borrar estudiante' no está implementada por el momento.\n");
 
             case 5:
                 printf("Ingrese su legajo: ");
@@ -151,17 +156,18 @@ void abmRegistros() {
 
                 printf("Seleccione la carrera:\n");
                 // Se elige la carrera (el csv)
-                obtenerRutaDelArchivoxCarrera(path, estudiante);
+                char path3[116] = "./materiasXcarreras/";
+                obtenerRutaDelArchivoxCarrera(path3, estudiante);
                 // Se paginan las materias del csv, si el usuario selecciona una materia
-                bool ID = ListarMaterias(path, false);
+                bool ID = ListarMaterias(path3, false);
                 if (ID) { //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
                     printf("Indique ID: ");
                     int idAnotar = validateIntInput();
                     // En base al id de la materia introducida, se busca y obtiene esa materia
-                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, path);
+                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, path3);
 
                     if (materiaAAnotarse != NULL) { //Si se encontro la materia..
-                        anotarMateria(materiaAAnotarse, estudiante, path);
+                        anotarMateria(materiaAAnotarse, estudiante, path3);
                     }
                 }
                 break;
@@ -178,7 +184,7 @@ void abmRegistros() {
                     printf("Indique ID: ");
                     int idMateria = validateIntInput();
                     // En base al id de la materia introducida, se busca y obtiene esa materia
-                    nodoListaMateria *materia = buscarMateriaPorID(estudiante->estudiante->materias, idMateria);
+                    nodoListaMateria *materia = buscarMateriaPorID(estudiante2->estudiante->materias, idMateria);
                     //Si no se encontro la materia en base al ID
                     if(materia == NULL){
                         printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada\n"COLOR_RESET, idMateria);
