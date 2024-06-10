@@ -768,3 +768,48 @@ bool ListarMateriasEstudiante(nodoListaMateria *lista, bool seleccionarID){
     return false; //Si el usuario no selecciono un ID
 }
 
+void eliminarMateriaEnArchivoCSV(char* path) {
+    //Limpiamos el buffer
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+
+    FILE *fh = fopen(path, "r");
+    if (fh == NULL) {
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo: %s.\n"COLOR_RESET, path);
+        return;
+    }
+
+    FILE *temp = fopen("temp.csv", "w");
+    if (temp == NULL) {
+        printf(COLOR_RED"ERROR: No se pudo abrir el archivo temporal.\n"COLOR_RESET);
+        return;
+    }
+
+    char nombre[100];
+    char anio[20];
+
+    printf("Nombre: ");
+    fgets(nombre, 100, stdin);
+
+    char* nombreFormateado = formatearInput(nombre);
+
+    printf("Año: ");
+    fgets(anio, 20, stdin);
+    char* anioFormateado = formatearInput(anio);
+
+    char buffer[1024];
+    while (fgets(buffer, sizeof(buffer), fh) != NULL) {
+        char* nombreArchivo = strtok(buffer, ",");
+        char* anioArchivo = strtok(NULL, ",");
+
+        if (strcmp(nombreFormateado, nombreArchivo) != 0 || strcmp(anioFormateado, anioArchivo) != 0) {
+            fputs(buffer, temp);
+        }
+    }
+
+    fclose(fh);
+    fclose(temp);
+
+    remove(path);
+    rename("temp.csv", path);
+}

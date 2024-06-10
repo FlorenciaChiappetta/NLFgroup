@@ -8,6 +8,7 @@
 
 nodoListaEstudiante *listaDeEstudiantes = NULL;
 nodoListaEstudiante *estudianteSeleccionado = NULL;
+char path[116] = "./materiasXcarreras/";
 
 void realizarConsultas() {
     int running = 1;
@@ -82,11 +83,13 @@ void abmRegistros() {
         switch (opcionElegida) {
             case 1:
                 printf("Seleccione la carrera:\n");
-                char path[116] = "./materiasXcarreras/";
                 elegirCarrera(path);
                 agregarMateriaEnArchivoCSV(path);
                 break;
             case 2:
+                eliminarMateriaEnArchivoCSV(path);
+                break;
+            case 3:
                 printf("Ingrese la informacion del estudiante:\n");
                 char nombre[100];
                 printf("Nombre: ");
@@ -125,7 +128,7 @@ void abmRegistros() {
                     darAltaEstudiante(&listaDeEstudiantes, aux);
                 }
                 break;
-            case 3:
+            case 4:
                 printf("Ingrese su legajo: ");
                 int legajoEst = validateIntInput();
                 nodoListaEstudiante *estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
@@ -151,10 +154,11 @@ void abmRegistros() {
                     }
                 }
                 break;
-            case 4:
+            case 5:
+            
                 //elige el estudiante
                 printf("Ingrese su legajo: ");
-//                int legajoEst2;
+                // int legajoEst2;
                 int legajoEst2 = validateIntInput();
                 nodoListaEstudiante* estudiante2 = validarLegajo(&listaDeEstudiantes, legajoEst2);
                 //elige la materia
@@ -173,7 +177,7 @@ void abmRegistros() {
                     rendirMateria(materia);
                 }
                 break;
-            case 5:
+            case 6:
                 running = 0;
                 break;
             default:

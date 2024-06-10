@@ -25,17 +25,18 @@ void menuPrincipal() {
 
     printf("Elija una de las siguientes opciones para continuar:\n\n");
     printf("1: Realizar una consulta \n");
-    printf("2: Agregar, borrar o modificar registros del sistema\n");
+    printf("2: ABM registros del sistema\n");
     printf("3: Salir\n");
 }
 
 void menuOpcionesABM() {
     printf("\nElija una de las siguientes opciones:\n\n");
     printf("1 Agregar materia\n");
-    printf("2 Agregar estudiante\n");
-    printf("3 Inscribir estudiante en materia\n");
-    printf("4 Registrar nota\n");
-    printf("5 Volver al menu principal\n");
+    printf("2 Borrar materia\n");
+    printf("3 Agregar estudiante\n");
+    printf("4 Inscribir estudiante en materia\n");
+    printf("5 Registrar nota\n");
+    printf("6 Volver al menu principal\n");
     printf("______________________________________________\n");
 }
 
