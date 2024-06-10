@@ -8,7 +8,7 @@
 
 nodoListaEstudiante *listaDeEstudiantes = NULL;
 nodoListaEstudiante *estudianteSeleccionado = NULL;
-char path[116] = "./materiasXcarreras/";
+//char path[116] = "./materiasXcarreras/";
 
 void realizarConsultas() {
     int running = 1;
@@ -91,11 +91,14 @@ void abmRegistros() {
         switch (opcionElegida) {
             case 1:
                 printf("Seleccione la carrera:\n");
+                char path[116] = "./materiasXcarreras/";
                 elegirCarrera(path);
                 agregarMateriaEnArchivoCSV(path);
                 break;
             case 2:
-                eliminarMateriaEnArchivoCSV(path);
+                printf("prueba:\n");
+                char path2[116] = "./materiasXcarreras/";
+                eliminarMateriaEnArchivoCSV(path2);
                 break;
             case 3:
                 printf("Ingrese la informacion del estudiante:\n");
@@ -151,17 +154,18 @@ void abmRegistros() {
 
                 printf("Seleccione la carrera:\n");
                 // Se elige la carrera (el csv)
-                obtenerRutaDelArchivoxCarrera(path, estudiante);
+                char path3[116] = "./materiasXcarreras/";
+                obtenerRutaDelArchivoxCarrera(path3, estudiante);
                 // Se paginan las materias del csv, si el usuario selecciona una materia
-                bool ID = ListarMaterias(path, false);
+                bool ID = ListarMaterias(path3, false);
                 if (ID) { //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
                     printf("Indique ID: ");
                     int idAnotar = validateIntInput();
                     // En base al id de la materia introducida, se busca y obtiene esa materia
-                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, path);
+                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, path3);
 
                     if (materiaAAnotarse != NULL) { //Si se encontro la materia..
-                        anotarMateria(materiaAAnotarse, estudiante, path);
+                        anotarMateria(materiaAAnotarse, estudiante, path3);
                     }
                 }
                 break;
