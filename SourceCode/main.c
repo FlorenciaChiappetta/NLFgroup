@@ -25,6 +25,7 @@ void realizarConsultas() {
                 printf("Elija una opción\n");
                 printf("1. Buscar estudiante por nombre\n");
                 printf("2. Buscar estudiante por legajo\n");
+                printf("3. Buscar estudiante por rango de edad\n");
                 int opcion = validateIntInput();
                 switch (opcion) {
                     case 1:
@@ -37,6 +38,13 @@ void realizarConsultas() {
                         printf("Ingrese el numero de legajo.\n");
                         int legajo = validateIntInput();
                         buscarEstudiantePorLegajo(&listaDeEstudiantes, legajo);
+                        break;
+                    case 3:
+                        printf("Ingrese la edad minima:\n");
+                        int edadMinima = validateIntInput();
+                        printf("Ingrese la edad máxima:\n");
+                        int edadMaxima = validateIntInput();    
+                        buscarEstudiantePorRangoEdad(&listaDeEstudiantes,&edadMinima,&edadMaxima);
                         break;
                     default:
                         printf("\nLa opcion ingresada es incorrecta.\n");
@@ -128,7 +136,11 @@ void abmRegistros() {
                     darAltaEstudiante(&listaDeEstudiantes, aux);
                 }
                 break;
+
             case 4:
+            //hacer eliminar
+
+            case 5:
                 printf("Ingrese su legajo: ");
                 int legajoEst = validateIntInput();
                 nodoListaEstudiante *estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
@@ -153,8 +165,7 @@ void abmRegistros() {
                     }
                 }
                 break;
-            case 5:
-            
+            case 6:
                 //elige el estudiante
                 printf("Ingrese su legajo: ");
                 // int legajoEst2;
@@ -176,7 +187,7 @@ void abmRegistros() {
                     rendirMateria(materia);
                 }
                 break;
-            case 6:
+            case 7:
                 running = 0;
                 break;
             default:

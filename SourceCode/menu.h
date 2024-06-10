@@ -34,9 +34,10 @@ void menuOpcionesABM() {
     printf("1 Agregar materia\n");
     printf("2 Borrar materia\n");
     printf("3 Agregar estudiante\n");
-    printf("4 Inscribir estudiante en materia\n");
-    printf("5 Registrar nota\n");
-    printf("6 Volver al menu principal\n");
+    printf("4 Borrar estudiante\n");
+    printf("5 Inscribir estudiante en materia\n");
+    printf("6 Registrar nota\n");
+    printf("7 Volver al menu principal\n");
     printf("______________________________________________\n");
 }
 

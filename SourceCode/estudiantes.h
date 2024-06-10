@@ -813,3 +813,24 @@ void eliminarMateriaEnArchivoCSV(char* path) {
     remove(path);
     rename("temp.csv", path);
 }
+
+int obtenerLenghtEstudiantes(nodoListaEstudiante **lista) {
+    int largo = 0;
+    nodoListaEstudiante *cursor = *lista;
+    while (cursor != NULL) {
+        cursor = cursor->proximo;
+        largo++;
+    }
+    return largo;
+}
+
+
+void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int edadMinima[2], int edadMaxima[2]){
+    nodoListaEstudiante *cursor = *lista;
+ while(cursor != NULL){
+    if (cursor->estudiante->edad >= edadMinima || cursor->estudiante->edad <= edadMaxima){
+        printf("[Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
+    }
+ }
+
+}
