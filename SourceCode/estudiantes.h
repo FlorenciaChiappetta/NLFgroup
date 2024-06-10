@@ -71,7 +71,7 @@ void listaDeMaterias(nodoListaMateria *lista, int pagina) {
 
     while (cursor != NULL && contador < final) {
         if(contador >= inicio){
-          printf("[ID: %d, Nombre: %s, Anio: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+          printf("[ID: %d, Nombre: %s, Anio: %d, Promedio: %.2f, Notas: %d,%d,%d]\n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
         }
         contador++;
         cursor = cursor->proximo;
@@ -209,7 +209,7 @@ void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]){
     bool estudianteEncontrado = false;
     while(cursor != NULL){
         if(strcmp(cursor->estudiante->nombre, nombre) == 0){
-            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] -> \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
+            printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
             estudianteEncontrado = true;
         }
         cursor = cursor->proximo;
@@ -227,7 +227,7 @@ nodoListaEstudiante* cursor = *lista;
     bool estudianteEncontrado = false;
     while(cursor != NULL){
         if(cursor->estudiante->legajo == legajo){
-            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)]\n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
+            printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)]\n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
             estudianteEncontrado = true;
         }
         cursor = cursor->proximo;
@@ -442,7 +442,7 @@ void getListaMaterias(nodoListaMateria *lista) {
     }
 
     while (cursor != NULL) {
-        printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+        printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
          cursor = cursor->proximo;
     }
 }
@@ -459,10 +459,12 @@ void elegirCarrera(char* path){
         {
         case 1:
             strcat(path, "IngenieriaEnComputacion.csv");
+//            path = concatChar(path, "IngenieriaEnComputacion.csv");
             salir=true;
             break;
         case 2:
             strcat(path, "IngenieriaEnSonido.csv");
+//            path = concatChar(path, "IngenieriaEnSonido.csv");
             salir=true;
             break;
         default:
@@ -519,8 +521,10 @@ void agregarMateriaEnArchivoCSV(char* path){
 void obtenerRutaDelArchivoxCarrera(char* path, nodoListaEstudiante* estudiante){
     if(estudiante->estudiante->carreraAnotada == computacion){
         strcat(path, "IngenieriaEnComputacion.csv");
+//        path = concatChar(path, "IngenieriaEnComputacion.csv");
     }else if(estudiante->estudiante->carreraAnotada == sonido){
         strcat(path, "IngenieriaEnSonido.csv");
+//        path = concatChar(path, "IngenieriaEnSonido.csv");
     }
 }
 
@@ -829,7 +833,7 @@ void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int* edadMinima, i
     nodoListaEstudiante *cursor = *lista;
  while(cursor != NULL){
     if (cursor->estudiante->edad >= edadMinima && cursor->estudiante->edad <= edadMaxima){
-        printf("[Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
+        printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
     }
  }
 
