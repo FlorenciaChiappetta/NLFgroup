@@ -133,24 +133,23 @@ void abmRegistros() {
                 int legajoEst = validateIntInput();
                 nodoListaEstudiante *estudiante = validarLegajo(&listaDeEstudiantes, legajoEst);
                 if (estudiante == NULL) {
-                    printf("No existe un estudiante con ese legajo!!\n");
+                    printf("No existe un estudiante con ese legajo\n");
                     return;
                 }
 
                 printf("Seleccione la carrera:\n");
-                char pathListar[116] = "./materiasXcarreras/";
                 // Se elige la carrera (el csv)
-                obtenerRutaDelArchivoxCarrera(pathListar, estudiante);
+                obtenerRutaDelArchivoxCarrera(path, estudiante);
                 // Se paginan las materias del csv, si el usuario selecciona una materia
-                bool ID = ListarMaterias(pathListar, false);
+                bool ID = ListarMaterias(path, false);
                 if (ID) { //Si el usuario eligio la opcion 'Seleccionar ID de materia' le pedimos el ID
                     printf("Indique ID: ");
                     int idAnotar = validateIntInput();
                     // En base al id de la materia introducida, se busca y obtiene esa materia
-                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, pathListar);
+                    Materia *materiaAAnotarse = buscarIDMateriaArchivo(idAnotar, path);
 
                     if (materiaAAnotarse != NULL) { //Si se encontro la materia..
-                        anotarMateria(materiaAAnotarse, estudiante, pathListar);
+                        anotarMateria(materiaAAnotarse, estudiante, path);
                     }
                 }
                 break;
