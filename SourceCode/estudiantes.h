@@ -1,9 +1,5 @@
 #include <string.h>
 #include <stdlib.h>
-<<<<<<< HEAD
-//#include <malloc.h>
-=======
->>>>>>> main
 #include <ctype.h>
 #include <math.h>
 #include "estructuras.h"
@@ -75,7 +71,7 @@ void listaDeMaterias(nodoListaMateria *lista, int pagina) {
 
     while (cursor != NULL && contador < final) {
         if(contador >= inicio){
-          printf("[ID: %d, Nombre: %s, Anio: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+          printf("[ID: %d, Nombre: %s, Anio: %d, Promedio: %.2f, Notas: %d,%d,%d]\n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
         }
         contador++;
         cursor = cursor->proximo;
@@ -203,11 +199,7 @@ void consultarPromedio(nodoListaMateria *lista) {
     if (contadorMateriasRendidas > 0) {
         promedio = (float) sumaNotas / contadorMateriasRendidas;
     }
-<<<<<<< HEAD
-    printf("Promedio: %.2f", promedio);
-=======
     printf("Promedio: %.2f\n", promedio);
->>>>>>> main
 
 }
 
@@ -217,18 +209,14 @@ void buscarEstudiantePorNombre(nodoListaEstudiante **lista, char nombre[100]){
     bool estudianteEncontrado = false;
     while(cursor != NULL){
         if(strcmp(cursor->estudiante->nombre, nombre) == 0){
-            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] -> \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
+            printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)] \n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
             estudianteEncontrado = true;
         }
         cursor = cursor->proximo;
     }
 
     if(!estudianteEncontrado){
-<<<<<<< HEAD
-        printf("No existe un estudiante con ese nombre!\n");
-=======
         printf("\nNo existe un estudiante con ese nombre!\n\n");
->>>>>>> main
     }
 
     return;
@@ -239,18 +227,14 @@ nodoListaEstudiante* cursor = *lista;
     bool estudianteEncontrado = false;
     while(cursor != NULL){
         if(cursor->estudiante->legajo == legajo){
-            printf("[Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)]\n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
+            printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %s, Legajo: %d, edad: %d%d)]\n ", cursor->estudiante->nombre, cursor->estudiante->apellido, cursor->estudiante->legajo, cursor->estudiante->edad[0],cursor->estudiante->edad[1]);
             estudianteEncontrado = true;
         }
         cursor = cursor->proximo;
     }
 
     if(!estudianteEncontrado){
-<<<<<<< HEAD
-        printf("No existe un estudiante con ese nombre!\n");
-=======
         printf("\nNo existe un estudiante con ese legajo!\n\n");
->>>>>>> main
     }
 
     return;
@@ -286,10 +270,6 @@ nodoListaMateria* crearNodoMateria(Materia* materiaNueva){
 }
 
 //Agrega a la lista de materias una materia nueva
-<<<<<<< HEAD
-//nodoListaMateria* darAltaMateria(nodoListaMateria** lista, Materia* nombreMateria){
-=======
->>>>>>> main
 void darAltaMateria(nodoListaMateria** lista, Materia* nombreMateria){
     nodoListaMateria *nuevoNodo = crearNodoMateria(nombreMateria);
     // si la lista esta vacia, le añado un nodo.
@@ -462,7 +442,7 @@ void getListaMaterias(nodoListaMateria *lista) {
     }
 
     while (cursor != NULL) {
-        printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] -> \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
+        printf("[ID: %d, Nombre: %s, Año: %d, Promedio: %.2f, Notas: %d,%d,%d] \n", contador + 1, cursor->materia->nombre, cursor->materia->anio, cursor->materia->promedio, cursor->materia->notas[0], cursor->materia->notas[1],cursor->materia->notas[2]);
          cursor = cursor->proximo;
     }
 }
@@ -474,20 +454,18 @@ void elegirCarrera(char* path){
         printf("1. Ingenieria de computacion\n");
         printf("2. Ingenieria de sonido\n");
         printf("\nIngrese una opcion: ");
-<<<<<<< HEAD
-        scanf("%d", &opcion);
-=======
         int opcion = validateIntInput();
->>>>>>> main
 
         switch (opcion)
         {
         case 1:
             strcat(path, "IngenieriaEnComputacion.csv");
+//            path = concatChar(path, "IngenieriaEnComputacion.csv");
             salir=true;
             break;
         case 2:
             strcat(path, "IngenieriaEnSonido.csv");
+//            path = concatChar(path, "IngenieriaEnSonido.csv");
             salir=true;
             break;
         default:
@@ -544,8 +522,10 @@ void agregarMateriaEnArchivoCSV(char* path){
 void obtenerRutaDelArchivoxCarrera(char* path, nodoListaEstudiante* estudiante){
     if(estudiante->estudiante->carreraAnotada == computacion){
         strcat(path, "IngenieriaEnComputacion.csv");
+//        path = concatChar(path, "IngenieriaEnComputacion.csv");
     }else if(estudiante->estudiante->carreraAnotada == sonido){
         strcat(path, "IngenieriaEnSonido.csv");
+//        path = concatChar(path, "IngenieriaEnSonido.csv");
     }
 }
 
@@ -722,13 +702,9 @@ void anotarMateria(Materia *materiaAnotar, nodoListaEstudiante *nodoEstudiante, 
 
     if(ValidarMateria(materiaAnotar, nodoEstudiante, path)){
         darAltaMateria(&nodoEstudiante->estudiante->materias,materiaAnotar);
-<<<<<<< HEAD
-        printf("Inscripción exitosa %s\n", materiaAnotar->nombre);
-=======
         printf("\nInscripción exitosa %s\n", materiaAnotar->nombre);
     } else {
         printf("\nError: Inscripción fallida! %s\n", materiaAnotar->nombre);
->>>>>>> main
     }
 }
 
@@ -859,7 +835,7 @@ void buscarEstudiantePorRangoEdad(nodoListaEstudiante **lista,int* edadMinima, i
     nodoListaEstudiante *cursor = *lista;
  while(cursor != NULL){
     if (cursor->estudiante->edad >= edadMinima && cursor->estudiante->edad <= edadMaxima){
-        printf("[Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
+        printf("\nEstudiante encontrado: [Nombre: %s, Apellido: %d, Edad, %d, Legajo: %.2f \n", cursor->estudiante->nombre, cursor->estudiante->apellido,cursor->estudiante->edad,cursor->estudiante->legajo);
     }
  }
 

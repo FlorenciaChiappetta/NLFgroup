@@ -91,14 +91,15 @@ void abmRegistros() {
         switch (opcionElegida) {
             case 1:
                 printf("Seleccione la carrera:\n");
-                char path[116] = "./materiasXcarreras/";
-                elegirCarrera(path);
-                agregarMateriaEnArchivoCSV(path);
+                char path1[116] = "./materiasXcarreras/";
+                elegirCarrera(path1);
+                agregarMateriaEnArchivoCSV(path1);
                 break;
             case 2:
-                printf("prueba:\n");
-                char path2[116] = "./materiasXcarreras/";
-                eliminarMateriaEnArchivoCSV(path2);
+                // TODO hacer eliminar materia
+                printf("La funcionalidad 'Eliminar Materia' no está disponible por el momento.\n");
+                // char path2[116] = "./materiasXcarreras/";
+                // eliminarMateriaEnArchivoCSV(path2);
                 break;
             case 3:
                 printf("Ingrese la informacion del estudiante:\n");
@@ -141,7 +142,8 @@ void abmRegistros() {
                 break;
 
             case 4:
-            //hacer eliminar
+                // TODO hacer eliminar estudiante
+                printf("La funcionalidad 'Borrar estudiante' no está implementada por el momento.\n");
 
             case 5:
                 printf("Ingrese su legajo: ");
@@ -182,7 +184,7 @@ void abmRegistros() {
                     printf("Indique ID: ");
                     int idMateria = validateIntInput();
                     // En base al id de la materia introducida, se busca y obtiene esa materia
-                    nodoListaMateria *materia = buscarMateriaPorID(estudiante->estudiante->materias, idMateria);
+                    nodoListaMateria *materia = buscarMateriaPorID(estudiante2->estudiante->materias, idMateria);
                     //Si no se encontro la materia en base al ID
                     if(materia == NULL){
                         printf(COLOR_RED"ERROR: La materia con el ID: %d no fue encontrada\n"COLOR_RESET, idMateria);
@@ -201,28 +203,28 @@ void abmRegistros() {
 }
 
 
-int main() {
-    int running = 1;
-    while (running) {
-        Bienvenida();
+// int main() {
+//     int running = 1;
+//     while (running) {
+//         Bienvenida();
 
-        int opcionElegida = validateIntInput();
-        switch (opcionElegida) {
-            case 1:
-                realizarConsultas();
-                break;
-            case 2:
-                abmRegistros();
-                break;
-            case 3:
-                running = 0;
-                break;
-            default:
-                printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
-                break;
-        }
-    }
-    menuFinalizar();
+//         int opcionElegida = validateIntInput();
+//         switch (opcionElegida) {
+//             case 1:
+//                 realizarConsultas();
+//                 break;
+//             case 2:
+//                 abmRegistros();
+//                 break;
+//             case 3:
+//                 running = 0;
+//                 break;
+//             default:
+//                 printf("La opcion ingresada es incorrecta.Por favor, intente de nuevo.\n\n");
+//                 break;
+//         }
+//     }
+//     menuFinalizar();
 
 //     return 0;
 // }
